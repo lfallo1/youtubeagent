@@ -3,7 +3,9 @@
         'ngRoute'
     ]);
 
-    myApp.config(['$routeProvider', function($routeProvider) {
+    myApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+
+        $locationProvider.html5Mode(true);
 
         $routeProvider.when('/', {
             templateUrl : 'home',
@@ -13,11 +15,9 @@
         $routeProvider.when('/users', {
             templateUrl : 'users',
             controller : 'UsersCtrl'
-        });
+        }, function(){ console.log('routeProvider: Users');});
 
-        $routeProvider.otherwise({
-            redirectTo: '/'
-        });
+        $routeProvider.otherwise('/');
 
     }])
     .run(['$rootScope', '$location', function($rootScope, $location){
