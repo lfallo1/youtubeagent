@@ -1,6 +1,6 @@
 (function() {
     var myApp = angular.module('nodeAngularDemoApp', [
-        'ngRoute',
+        'ngRoute'
     ]);
 
     myApp.config(['$routeProvider', function($routeProvider) {
@@ -10,12 +10,18 @@
             controller : 'HomeCtrl'
         });
 
+        $routeProvider.when('/users', {
+            templateUrl : 'users',
+            controller : 'UsersCtrl'
+        });
+
         $routeProvider.otherwise({
             redirectTo: '/'
         });
 
     }])
-    .run(['$rootScope', '$location', 'ApplicationState', function($rootScope, $location, ApplicationState){
+    .run(['$rootScope', '$location', function($rootScope, $location){
         console.log('run any additional setup here...');
     }]);
+
 }());
