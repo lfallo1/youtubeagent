@@ -1,14 +1,14 @@
 (function(){
     angular.module('nodeAngularDemoApp').controller('HomeCtrl', [
-        '$rootScope', '$scope', '$location',
-        function($rootScope, $scope, $location){
+        '$rootScope', '$scope', '$state',
+        function($rootScope, $scope, $state){
 
             $scope.init = function(){
                 $scope.pageTitle = 'Welcome to the Home Page';
             };
 
             $scope.linkMembers = function(){
-                $location.path('users');
+                $state.go('users');
             };
 
             $scope.init();

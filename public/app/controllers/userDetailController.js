@@ -1,7 +1,7 @@
 (function(){
     angular.module('nodeAngularDemoApp').controller('UserDetailController', [
-        '$rootScope', '$scope', '$location', '$http', /* '$routeParams', */ '$stateParams',
-        function($rootScope, $scope, $location, $http, $stateParams){
+        '$rootScope', '$scope', '$http', '$state', '$stateParams',
+        function($rootScope, $scope, $http, $state, $stateParams){
 
             $scope.user = {};
 
@@ -14,7 +14,7 @@
             };
 
             $scope.linkHome = function(){
-                $location.path('/');
+                $state.go('home');
             };
 
             $scope.init();
