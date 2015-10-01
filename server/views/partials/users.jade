@@ -1,0 +1,7 @@
+h1 {{pageTitle}}
+div
+    ul
+        li(ng-repeat='user in users')
+            span
+                strong {{user.name}} - {{user.age}}
+a(href='', ng-click='linkHome()') Home

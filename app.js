@@ -1,33 +1,31 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
-var path = require('path');
-var fs = require('fs');
+var express = require('express'),
+    bodyParser = require('body-parser'),
+    fs = require('fs'),
+    path = require('path');
 
-var PORT = process.env.PORT || 3000;
+var app = express();
+
+// Configuration
 
 app.set('views', __dirname + '/server/views');
 app.set('view engine', 'jade');
 app.set('view options', {
  layout: false
 });
-
-//Set middleware
-app.use('/bower', express.static(__dirname + '/public/vendor/'));
-app.use('/static', express.static(__dirname + '/public/'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
+app.use('/bower', express.static(__dirname + '/public/vendor/'));
+app.use('/static', express.static(__dirname + '/public/'));
+
+// Routes
 
 app.get('/', function(req, res){
-    res.render('layout/index');
+ res.render('index');
 });
 
-app.get('/home', function(req, res){
-   res.render('home');
-});
-
-app.get('/users', function(req, res){
- res.render('users');
+app.get('/partials/:name', function(req, res){
+ var name = req.params.name;
+ res.render('partials/' + name);
 });
 
 var results = {};
@@ -43,10 +41,13 @@ app.get('/api/users', function (req, res, next) {
  res.json(results);
 });
 
+// redirect all others to the index (HTML5 history)
 app.get('*', function(req, res){
- console.log('FALLBACK!!');
- res.render('layout/index');
+ res.render('index')
 });
 
-//Start server
-app.listen(PORT);
+// Start server
+
+app.listen(3000, function(){
+ console.log("Express server listening");
+});

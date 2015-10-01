@@ -8,7 +8,7 @@
             };
 
             $scope.linkMembers = function(){
-                $location.path('/users');
+                $location.path('users');
             };
 
             $scope.init();

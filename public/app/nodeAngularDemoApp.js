@@ -1,27 +1,21 @@
-(function() {
-    var myApp = angular.module('nodeAngularDemoApp', [
-        'ngRoute'
-    ]);
+'use strict';
 
-    myApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-
+// Declare app level module which depends on filters, and services
+angular.module('nodeAngularDemoApp', ['ngRoute']).
+    config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+        $routeProvider.
+            when('/', {
+                templateUrl: 'partials/home',
+                controller: 'HomeCtrl'
+            }).
+            when('/users', {
+                templateUrl: 'partials/users',
+                controller: 'UsersCtrl'
+            }).
+            otherwise({
+                redirectTo: '/'
+            });
         $locationProvider.html5Mode(true);
-
-        $routeProvider.when('/', {
-            templateUrl : 'home',
-            controller : 'HomeCtrl'
-        });
-
-        $routeProvider.when('/users', {
-            templateUrl : 'users',
-            controller : 'UsersCtrl'
-        }, function(){ console.log('routeProvider: Users');});
-
-        $routeProvider.otherwise('/');
-
-    }])
-    .run(['$rootScope', '$location', function($rootScope, $location){
+    }]).run(['$rootScope', '$location', function($rootScope, $location){
         console.log('run any additional setup here...');
-    }]);
-
-}());
+    }]);;
