@@ -1,16 +1,27 @@
 (function() {
+
     var restServices = angular.module('apiServices', ['ngResource']);
 
-    restServices.service('UserResource', ['$resource', function($resource) {
-        return $resource("api/users/:id", {}, {
-            getAll: {
-                method: "GET",
-                url:"api/users", isArray: true
-            },
-            getByName: {
-                method: "GET",
-                url:"api/users/:name", isArray: false
-            }
-        });
-    }]);
+    restServices.factory('userService', ['$http', '$q', '$log', '$timeout', userService]);
+
+    function userService($http, $q, $log, $timeout) {
+
+        return {
+            getAll : getAll
+        };
+
+        function getAll() {
+            var deferred = $q.defer();
+
+            $http.get('api/users').then(function (response) {
+                deferred.resolve(response.data);
+            }).catch(function (response) {
+                $log.error(response.statusText);
+                return $q.reject('Error retrieving users');
+            });
+
+            return deferred.promise;
+        }
+    }
+
 })();

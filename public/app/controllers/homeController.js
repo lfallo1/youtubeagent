@@ -1,16 +1,12 @@
 (function(){
     angular.module('nodeAngularDemoApp').controller('HomeCtrl', [
-        '$rootScope', '$scope', '$state', '$log', 'UserResource',
-        function($rootScope, $scope, $state, $log, UserResource){
+        '$rootScope', '$scope', '$state', '$log', 'myUsers',
+        function($rootScope, $scope, $state, $log, myUsers){
 
             $scope.init = function(){
                 $scope.pageTitle = 'Welcome to the Home Page';
                 $log.debug($state.current.myData.data1 + ' ' + $state.current.myData.data2);
-                UserResource.getAll().$promise.then(function(data){
-                    $log.debug(data);
-                }, function(err){
-                    $log.debug(err);
-                });
+                $log.debug(myUsers);
             };
 
             $scope.linkMembers = function(){

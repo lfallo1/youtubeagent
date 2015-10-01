@@ -13,6 +13,11 @@ angular.module('nodeAngularDemoApp', ['apiServices', 'ui.router']).
                 myData : {
                     data1 : 'myData',
                     data2 : 'myData2'
+                },
+                resolve : {
+                    myUsers : function(userService){
+                        return userService.getAll();
+                    }
                 }
             }).
             state('users', {
