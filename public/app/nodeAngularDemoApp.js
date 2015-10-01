@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('nodeAngularDemoApp', ['ui.router']).
+angular.module('nodeAngularDemoApp', ['apiServices', 'ui.router']).
     config(['$stateProvider', '$locationProvider', '$urlRouterProvider', function($stateProvider, $locationProvider, $urlRouterProvider) {
 
         $urlRouterProvider.otherwise('/');
@@ -9,7 +9,11 @@ angular.module('nodeAngularDemoApp', ['ui.router']).
             state('home', {
                 url : '/',
                 templateUrl: 'partials/home',
-                controller: 'HomeCtrl'
+                controller: 'HomeCtrl',
+                myData : {
+                    data1 : 'myData',
+                    data2 : 'myData2'
+                }
             }).
             state('users', {
                 url : '/users',
