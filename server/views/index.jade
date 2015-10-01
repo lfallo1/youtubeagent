@@ -1,10 +1,12 @@
 extends layout
 
 block body
-    div(ng-view)
+    div(ui-view)
 
     script(src='bower/angular/angular.js')
-    script(src='bower/angular-route/angular-route.js')
+    //script(src='bower/angular-route/angular-route.js')
+    script(src='bower/angular-ui-router/release/angular-ui-router.js')
     script(src='static/app/nodeAngularDemoApp.js')
     script(src='static/app/controllers/homeController.js')
     script(src='static/app/controllers/usersController.js')
+    script(src='static/app/controllers/userDetailController.js')

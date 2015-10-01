@@ -1,7 +1,10 @@
 h1 {{pageTitle}}
+h4 {{userStatsMain}} {{userStatsExtra}}
+hr
+h4 {{addlInfo}}
 div
     ul
         li(ng-repeat='user in users')
             span
-                strong {{user.name}} - {{user.age}}
+                a(href='', ng-click='viewDetails(user.name)') {{user.name}} - {{user.age}}
 a(href='', ng-click='linkHome()') Home
