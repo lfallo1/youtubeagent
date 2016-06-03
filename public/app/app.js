@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('nodeAngularDemoApp', ['apiServices', 'ui.router']).
+angular.module('youtubeSearchApp', ['ui.router']).
     config(['$stateProvider', '$locationProvider', '$urlRouterProvider', function($stateProvider, $locationProvider, $urlRouterProvider) {
 
         $urlRouterProvider.otherwise('/');
@@ -8,7 +8,7 @@ angular.module('nodeAngularDemoApp', ['apiServices', 'ui.router']).
         $stateProvider.
             state('home', {
                 url : '/',
-                templateUrl : '/static/app/views/home.html',
+                templateUrl : 'partial/home.html',
                 controller: 'HomeCtrl'
             });
 

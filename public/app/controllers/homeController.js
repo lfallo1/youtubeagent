@@ -1,5 +1,5 @@
 (function(){
-    angular.module('nodeAngularDemoApp').controller('HomeCtrl', [
+    angular.module('youtubeSearchApp').controller('HomeCtrl', [
         '$rootScope', '$scope', '$state', '$http', '$q', '$log',
         function($rootScope, $scope, $state, $http, $q, $log){
 
