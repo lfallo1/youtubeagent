@@ -8,7 +8,7 @@ angular.module('youtubeSearchApp', ['ui.router']).
         $stateProvider.
             state('home', {
                 url : '/',
-                templateUrl : 'partial/home.html',
+                templateUrl : '/partials/home',
                 controller: 'HomeCtrl'
             });
 

@@ -23,11 +23,19 @@ app.use('/css', express.static(__dirname + '/public/app/css/'));
 // Routes
 
 app.get('/', function(req, res){
+    console.log('rendering default: ' + req.params.name);
  res.render('index.html');
+});
+
+app.get('/partials/:name', function(req, res){
+    var name = req.params.name;
+    console.log('rendering ' + 'partial/' + name);
+    res.render('partial/' + name);
 });
 
 // redirect all others to the index (HTML5 history)
 app.get('*', function(req, res){
+    console.log('rendering default * :' + req.params.name);
  res.render('index.html')
 });
 
