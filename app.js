@@ -1,6 +1,5 @@
 var express = require('express'),
-    bodyParser = require('body-parser'),
-    usersAPI = require('./server/routes/usersAPI.js');
+    bodyParser = require('body-parser');
 
 var app = express();
 
@@ -21,15 +20,6 @@ app.use('/static', express.static(__dirname + '/public/'));
 app.get('/', function(req, res){
  res.render('index');
 });
-
-app.get('/partials/:name', function(req, res){
- var name = req.params.name;
- res.render('partials/' + name);
-});
-
-//API
-app.get('/api/users', usersAPI.getAll);
-app.get('/api/users/:name', usersAPI.getByName);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', function(req, res){

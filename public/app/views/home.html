@@ -1,0 +1,25 @@
+<table>
+    <thead>
+        <tr>
+            <th>Views</th>
+            <th>Avg Rating</th>
+            <th>Likes</th>
+            <th>Dislikes</th>
+            <th>Title</th>
+            <th>Video</th>
+        </tr>
+    </thead>
+    <tbod>
+        <tr ng-repeat="video in searchResults">
+            <td>{{video.views}}</td>
+            <td>{{video.pctLikes}}</td>
+            <td>{{video.likes}}</td>
+            <td>{{video.dislikes}}</td>
+            <td>{{video.pctLikes}}</td>
+            <td>
+                <img src="video.thumbnail.url" width="100px" class="thumbnail" />
+                <div class="title">{{video.title}}</div>
+            </td>
+        </tr>
+    </tbod>
+</table>
