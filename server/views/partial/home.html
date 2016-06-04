@@ -12,24 +12,25 @@
         </div>
     </div>
     <div id="search-results-label-container" ng-if="searchResults.length > 0" class="form-group col-md-3">
-        <div id="search-results-header">Search results: <span id="totalResults">{{searchResults.length}}</span></div>
+        <div id="search-results-header">Search results: <span id="totalResults">{{filteredResults.length}}</span></div>
     </div>
 </div>
 
 <div class="row">
-    <div id="sort-options" class="col-md-6">
-        <div id="filter-by-label">Sort by: </div>
-        <div ng-class="{isActive : sortField === 'viewCount'}" class="clickable" ng-click="sort('viewCount', -1)"><span class="glyphicon glyphicon-user"></span>Views</div>
-        <div ng-class="{isActive : sortField === 'likes'}" class="clickable" ng-click="sort('likes', -1)"><span class="glyphicon glyphicon-thumbs-up"></span>Likes</div>
-        <div ng-class="{isActive : sortField === 'dislikes'}" class="clickable" ng-click="sort('dislikes', 1)"><span class="glyphicon glyphicon-thumbs-down"></span>Dislikes</div>
-    </div>
-</div>
+    <div class="col-md-4 well well-md">
+        <div id="sort-options-container">
+            <span class="glyphicon glyphicon-sort"></span>
+            <label ng-repeat="option in sortOptions" ng-click="sortOptionChanged(option)">
+                <input type="radio" ng-checked="option.value === sortField" value="{{option.value}}" ng-model="sortField" name="options" > {{option.displayName}}
+            </label>
+        </div>
 
-<div id="minDislikesContainer" class="row">
-    <div class="input-group col-md-3">
-        <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
-        <input class="form-control" ng-model="minDislikes" type="text" ng-keyup="filter()" />
-        <div class="input-group-addon">min dislikes</div>
+        <div id="minDislikesContainer">
+            <span class="glyphicon glyphicon-filter"></span>
+            <input ng-model="minDislikes" type="text" ng-keyup="filter()" placeholder="Maximum dislikes" />
+            <input type="date" ng-model="minDate" placeholder="Select earliest date" />
+        </div>
+
     </div>
 </div>
 
@@ -39,7 +40,7 @@
     <div class="col-md-6">
         <table class="table">
             <tbody>
-            <tr ng-repeat="video in searchResults">
+            <tr ng-repeat="video in filteredResults">
                 <td>
                     <div class="video-image-container">
                         <a ng-href="{{'https://www.youtube.com/watch?v=' + video.videoId}}" target="_blank">
@@ -50,7 +51,9 @@
                 <td>
                     <div class="video-details-container">
                         <div class="videoTitle">{{video.title}}</div>
-                        <div class="rating"><small>Rating</small> {{video.pctLikes | number:2}}%</div>
+                        <div class="duration">{{video.duration ? video.duration + " (~" + video.durationMinutes + " minutes)" : ""}}</div>
+                        <div class="created">{{video.created | date:'MM-dd-yyyy'}}</div>
+                        <div class="rating"><small>Rating</small> {{video.pctLikes}}</div>
                         <div class="view-count"><small>Views</small> {{video.viewCount}}</div>
                         <div class="likes"><small>Likes</small> {{video.likes}}</div>
                         <div class="dislikes"><small>Dislikes</small> {{video.dislikes}}</div>

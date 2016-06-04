@@ -49,11 +49,21 @@ body{
 #minDislikesContainer{
     margin-left: 36px;
     display: inline-block;
+    width: 250px;
 }
 
 #minDislikesContainer .input-group-addon{
     background: #00695C;
     color: white;
+}
+
+#sort-options-container{
+    margin-left: 35px;
+    margin-bottom: 15px;
+}
+
+#sort-options-container label{
+    margin-left: 15px;
 }
 
 .table, .panel, .thumbnail{
