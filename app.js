@@ -3,6 +3,8 @@ var express = require('express'),
 
 var app = express();
 
+var port = process.env.PORT || 3000;
+
 // Configuration
 
 //app.set('views', __dirname + '/server/views');
@@ -41,6 +43,6 @@ app.get('*', function(req, res){
 
 // Start server
 
-app.listen(3000, function(){
+app.listen(port, function(){
  console.log("Express server listening");
 });

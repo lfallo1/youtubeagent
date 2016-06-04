@@ -1,15 +1,15 @@
 'use strict';
 
-angular.module('youtubeSearchApp', ['ui.router']).
-    config(['$stateProvider', '$locationProvider', '$urlRouterProvider', function($stateProvider, $locationProvider, $urlRouterProvider) {
+angular.module('youtubeSearchApp', ['ui.router','ngRoute']).
+    config(['$stateProvider', '$locationProvider', '$urlRouterProvider', '$routeProvider', function($stateProvider, $locationProvider, $urlRouterProvider, $routeProvider) {
 
-        $urlRouterProvider.otherwise('/');
-
-        $stateProvider.
-            state('home', {
-                url : '/',
-                templateUrl : '/partials/home',
+        $routeProvider.
+            when('/', {
+                templateUrl : 'partials/home',
                 controller: 'HomeCtrl'
+            }).
+            otherwise({
+                redirectTo: '/'
             });
 
         $locationProvider.html5Mode(true);

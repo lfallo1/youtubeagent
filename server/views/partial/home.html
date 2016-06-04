@@ -1,25 +1,52 @@
-<table>
-    <thead>
-        <tr>
-            <th>Views</th>
-            <th>Avg Rating</th>
-            <th>Likes</th>
-            <th>Dislikes</th>
-            <th>Title</th>
-            <th>Video</th>
-        </tr>
-    </thead>
-    <tbod>
-        <tr ng-repeat="video in searchResults">
-            <td>{{video.views}}</td>
-            <td>{{video.pctLikes}}</td>
-            <td>{{video.likes}}</td>
-            <td>{{video.dislikes}}</td>
-            <td>{{video.pctLikes}}</td>
-            <td>
-                <img src="video.thumbnail.url" width="100px" class="thumbnail" />
-                <div class="title">{{video.title}}</div>
-            </td>
-        </tr>
-    </tbod>
-</table>
+<div id="input-container" class="row">
+
+    <div id="textbox-container" class="form-group col-md-4">
+        <div class="input-group">
+            <input class="form-control" type="text" ng-model="searchParam" placeholder="search term here..." />
+            <div id="searchButton" ng-if="!fetching" class="notta-button input-group-addon" ng-click="doSearch()"><span class="glyphicon glyphicon-search"></span>Search</div>
+            <div id="stopButton" ng-if="fetching" class="notta-button input-group-addon" ng-click="interrupt()"><span class="glyphicon glyphicon-stop"></span></div>
+        </div>
+        <div id="status-container" class="text-center">
+            <h4 ng-if="searchResults.length > 0" class="text-success">{{searchResults.length}} results</h4>
+        </div>
+    </div>
+    <div id="minDislikesContainer" class="form-group col-md-3">
+        <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></div>
+            <input class="form-control" ng-model="minDislikes" type="text" ng-keyup="filter()" />
+            <div class="input-group-addon">min dislikes</div>
+        </div>
+    </div>
+</div>
+
+<!--ng-if="fetching"-->
+
+
+<div id="resultsTable" class="row">
+    <div class="col-md-8">
+        <table class="table table-responsive">
+            <thead>
+            <tr>
+                <th class="clickable" ng-click="sort('viewCount', -1)">Views</th>
+                <th class="clickable" ng-click="sort('likes', -1)">Likes</th>
+                <th class="clickable" ng-click="sort('dislikes', 1)">Dislikes</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbod>
+                <tr ng-repeat="video in searchResults">
+                    <td>{{video.viewCount}}</td>
+                    <td>{{video.likes}}</td>
+                    <td>{{video.dislikes}}</td>
+                    <td class="image-title-cell">
+                        <a ng-href="{{'https://www.youtube.com/watch?v=' + video.videoId}}">
+                            <img src="{{video.thumbnail.url}}" width="250px" class="thumbnail" />
+                        </a>
+                        <div class="videoTitle">{{video.title}}</div>
+                        <div class="rating"><strong>Rating</strong> {{video.pctLikes}}%</div>
+                    </td>
+                </tr>
+            </tbod>
+        </table>
+    </div>
+</div>

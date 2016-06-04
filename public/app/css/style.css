@@ -1,0 +1,52 @@
+body{
+    font-family: sans-serif;
+    background: #eeeee;
+}
+
+#input-container{
+    margin: 25px
+}
+
+.table{
+    margin: 25px;
+    text-align: center;
+}
+
+.table th{
+    font-size: 18px;
+}
+
+.table img{
+    margin: 0 auto;
+}
+
+.clickable:hover{
+    cursor: pointer;
+    color: #2196F3;
+}
+
+#searchButton{
+    color: white;
+    background: #1A237E;
+    border-color: #1A237E;
+}
+
+#stopButton{
+    color: white;
+    background: #d43f3a;
+    border-color: #1A237E;
+}
+
+.notta-button:hover{
+    cursor: pointer;
+    opacity: 0.75;
+}
+
+#searchButton .glyphicon{
+    margin-right: 5px;
+}
+
+#minDislikesContainer .input-group-addon{
+    background: #00695C;
+    color: white;
+}
