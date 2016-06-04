@@ -6,8 +6,10 @@
             $scope.totalResults = 0;
             $scope.searchParam = '';
             $scope.searchResults = [];
+            $scope.sortField = 'viewCount';
 
             var apikey = "AIzaSyAdvomXbhYg3GeBGymbPVBg-aRJeIOfFyQ";
+            //var apikey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
             var totalPages = 25;
             var nextPageToken = '';
 
@@ -16,14 +18,17 @@
             };
 
             $scope.doSearch = function(){
-                $scope.stop = undefined;
-                $scope.searchResults = [];
-                $scope.searchParam = $scope.searchParam.replace(" ",",");
-                $scope.fetching = true;
-                getPage();
+                $scope.searchParam = $scope.searchParam.trim();
+                if($scope.searchParam){
+                    $scope.stop = undefined;
+                    $scope.searchResults = [];
+                    $scope.fetching = true;
+                    getPage();
+                }
             };
 
             $scope.sort = function(field, direction){
+                $scope.sortField = field;
                 $scope.searchResults = $scope.searchResults.sort(function(a,b){
                     return a[field] > b[field] ? direction : a[field] < b[field] ? -direction : 0;
                 });
@@ -49,7 +54,7 @@
                 }
 
                 var _nextPageToken = token ? 'pageToken=' + token + '&' : '';
-                var searchUrl = "https://www.googleapis.com/youtube/v3/search?"+ _nextPageToken +"key="+ apikey +"&part=snippet&q="+ $scope.searchParam +"&type=video&maxResults=50&order=rating";
+                var searchUrl = "https://www.googleapis.com/youtube/v3/search?"+ _nextPageToken +"key="+ apikey +"&part=snippet&q="+ $scope.searchParam +"&type=video&maxResults=50&order=viewCount";
 
                 $http.get(searchUrl).then(function(res){
 

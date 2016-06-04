@@ -46,7 +46,76 @@ body{
     margin-right: 5px;
 }
 
+#minDislikesContainer{
+    margin-left: 36px;
+    display: inline-block;
+}
+
 #minDislikesContainer .input-group-addon{
     background: #00695C;
     color: white;
+}
+
+.table, .panel, .thumbnail{
+    border: none !important;
+}
+
+.video-details-container{
+    text-align: left;
+}
+
+.videoTitle{
+    font-weight: bold;
+}
+
+#sort-options div{
+    display: inline-block;
+}
+
+#sort-options{
+    margin-left: 35px;
+    margin-bottom: 25px;
+    display: inline-block !important;
+}
+
+#sort-options #filter-by-label{
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.clickable{
+    background: #00695C;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.clickable:hover{
+    color: white !important;
+    opacity: 0.7;
+}
+
+.clickable:active{
+    color: white !important;
+    opacity: 0.7;
+    box-shadow: 7px 13px 18px black inset;
+}
+
+#results{
+    margin-left: 15px;
+}
+
+#search-results-header{
+    font-size: 18px;
+    margin-top: 4px;
+}
+
+.panel-heading{
+    color: #00695C !important;
+    background: none !important;
+    border: none !important;
+}
+
+.isActive{
+    box-shadow: 5px 10px 18px black inset;
 }
