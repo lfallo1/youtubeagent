@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded());
 app.use('/bower', express.static(__dirname + '/public/vendor/'));
 app.use('/static', express.static(__dirname + '/public/'));
 app.use('/css', express.static(__dirname + '/public/app/css/'));
+app.use('/images', express.static(__dirname + '/public/app/images/'));
 
 // Routes
 

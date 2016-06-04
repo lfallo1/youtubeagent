@@ -1,5 +1,5 @@
-<div class="page-header">
-    <h1>YouTube Search <small>Better is all</small></h1>
+<div id="page-header" class="row">
+    <div id="title-text"><span id="you">You</span><span id="tube">Tube</span><span id="search"> Search Tool<span class="glyphicon glyphicon-wrench"></span></span></div>
 </div>
 
 <div id="input-container" class="row">
@@ -8,29 +8,55 @@
         <div class="input-group">
             <input class="form-control" type="text" ng-model="searchParam" placeholder="search term here..." />
             <div id="searchButton" ng-if="!fetching" class="notta-button input-group-addon" ng-click="doSearch()"><span class="glyphicon glyphicon-search"></span>Search</div>
-            <div id="stopButton" ng-if="fetching" class="notta-button input-group-addon" ng-click="interrupt()"><span class="glyphicon glyphicon-stop"></span></div>
+            <div id="stopButton" ng-if="fetching" class="notta-button input-group-addon" ng-click="interrupt()"><span class="glyphicon glyphicon-stop"></span>Stop</div>
         </div>
     </div>
-    <div id="search-results-label-container" ng-if="searchResults.length > 0" class="form-group col-md-3">
+</div>
+
+<div id="results-label-container" class="row" ng-if="searchResults.length > 0">
+    <div class="form-group col-md-4 text-center">
         <div id="search-results-header">Search results: <span id="totalResults">{{filteredResults.length}}</span></div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-4 well well-md">
-        <div id="sort-options-container">
-            <span class="glyphicon glyphicon-sort"></span>
-            <label ng-repeat="option in sortOptions" ng-click="sortOptionChanged(option)">
-                <input type="radio" ng-checked="option.value === sortField" value="{{option.value}}" ng-model="sortField" name="options" > {{option.displayName}}
-            </label>
+    <div id="sort-and-filter" class="col-md-4">
+        <div id="sort-options-container" class="row">
+            <div class="col-md-12 sort-filter-header">
+                <div class="sort-filter-header-content"><span class="glyphicon glyphicon-sort"></span>Sort</div>
+            </div>
+            <div class="col-md-12 sort-content">
+                <label ng-repeat="option in sortOptions" ng-click="sortOptionChanged(option)">
+                    <input type="radio" ng-checked="option.value === sortField" value="{{option.value}}" ng-model="sortField" name="options" >
+                        <span class="glyphicon glyphicon-{{option.glyph}}"></span>{{option.displayName}}
+                </label>
+            </div>
         </div>
+        <div id="filter-options-container" class="row">
+            <div class="col-md-12 sort-filter-header">
+                <div class="sort-filter-header-content"><span class="glyphicon glyphicon-filter"></span>Filter</div>
+            </div>
+            <div class="col-md-12 filter-content">
+                <div id="maxDislikesContainer">
+                    <div id="maxDislikesHeader"><span class="glyphicon glyphicon-thumbs-down"></span>Dislikes</div>
+                    <input ng-model="minDislikes" type="text" class="form-control" ng-keyup="filter()" placeholder="Maximum dislikes" />
+                </div>
+                <div id="minRatingContainer">
+                    <div id="minRatingHeader"><span class="glyphicon glyphicon-star"></span>MinRating</div>
+                    <input ng-model="minRating" type="text" class="form-control" ng-keyup="filter()" placeholder="Minimum rating (0 to 100)" />
+                </div>
+                <div id="dateFilter">
+                    <div id="dateFilterHeader"><span class="glyphicon glyphicon-calendar"></span>Date</div>
+                    <input type="date" class="form-control" ng-model="minDate" placeholder="Select earliest date" />
+                </div>
 
-        <div id="minDislikesContainer">
-            <span class="glyphicon glyphicon-filter"></span>
-            <input ng-model="minDislikes" type="text" ng-keyup="filter()" placeholder="Maximum dislikes" />
-            <input type="date" ng-model="minDate" placeholder="Select earliest date" />
+                <div id="durationContainer">
+                    <div id="durationFilterHeader"><span class="glyphicon glyphicon-time"></span>Duration</div>
+                    <input ng-model="longerThanFilter" type="text" class="form-control" placeholder="Only videos longer than (minutes)" ng-keyup="filter()"/>
+                    <input ng-model="lessThanFilter" type="text" class="form-control" placeholder="Only videos less than (minutes)" ng-keyup="filter()" />
+                </div>
+            </div>
         </div>
-
     </div>
 </div>
 
@@ -53,7 +79,7 @@
                         <div class="videoTitle">{{video.title}}</div>
                         <div class="duration">{{video.duration ? video.duration + " (~" + video.durationMinutes + " minutes)" : ""}}</div>
                         <div class="created">{{video.created | date:'MM-dd-yyyy'}}</div>
-                        <div class="rating"><small>Rating</small> {{video.pctLikes}}</div>
+                        <div class="rating"><small>Rating</small> {{video.pctLikes | number:2}}</div>
                         <div class="view-count"><small>Views</small> {{video.viewCount}}</div>
                         <div class="likes"><small>Likes</small> {{video.likes}}</div>
                         <div class="dislikes"><small>Dislikes</small> {{video.dislikes}}</div>

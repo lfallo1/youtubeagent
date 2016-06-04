@@ -12,7 +12,8 @@
                 $scope.sortOptions = [
                     new SortOption('viewCount', -1, 'user', 'Views'),
                     new SortOption('likes', -1, 'thumbs-up', 'Likes'),
-                    new SortOption('dislikes', 1, 'thumbs-down', 'Dislikes')
+                    new SortOption('dislikes', 1, 'thumbs-down', 'Dislikes'),
+                    new SortOption('pctLikes', -1, 'star', 'Rating')
                 ];
                 $scope.sortField = $scope.sortOptions[0].value;
             };
@@ -24,8 +25,6 @@
 
             var apikey = "AIzaSyAdvomXbhYg3GeBGymbPVBg-aRJeIOfFyQ";
             //var apikey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
-            var totalPages = 25;
-            var nextPageToken = '';
             var sortOrders = [];
 
             function SortOption(value, direction, glyph, displayName){
@@ -71,13 +70,17 @@
             };
 
             $scope.filter = function(){
-                if(!$scope.minDislikes && !$scope.minDate){
+                if(!$scope.minDislikes && !$scope.minDate && !$scope.shorterThanFilter && !$scope.longerThanFilter && !$scope.minRating){
                     $scope.filteredResults = $scope.searchResults;
                     return;
                 }
                 $scope.filteredResults = $scope.searchResults.filter(function(d){
                    if((!$scope.minDislikes || d.dislikes <= $scope.minDislikes) &&
-                       (!$scope.minDate || d.created >= $scope.minDate)){
+                       (!$scope.minRating || d.pctLikes >= $scope.minRating) &&
+                       (!$scope.minDate || d.created >= $scope.minDate) &&
+                       (isNaN(d.durationMinutes) ||
+                       ((isNaN($scope.longerThanFilter) || d.durationMinutes >= $scope.longerThanFilter) &&
+                       (isNaN($scope.shorterThanFilter) || d.durationMinutes <= $scope.shorterThanFilter)))){
                        return d;
                    }
                 });
@@ -202,7 +205,7 @@
                                 "title" : title,
                                 "created" : created,
                                 "videoId" : id,
-                                "pctLikes" : pctLikes ? Number(pctLikes).toFixed(2) + "%" : 'N/A',
+                                "pctLikes" : pctLikes || 0,
                                 "viewCount" : Number(viewCount),
                                 "likes" : Number(likes) || 0,
                                 "dislikes" : Number(dislikes) || 0,

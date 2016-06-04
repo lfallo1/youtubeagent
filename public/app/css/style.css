@@ -3,6 +3,44 @@ body{
     background: #eeeee;
 }
 
+#page-header{
+    margin-left: 30px;
+}
+
+#page-header #you, #page-header #tube{
+    font-size: 42px;
+}
+
+#page-header #tube{
+    color: white;
+    background: rgba(231, 5, 23, 1);
+    padding: 4px;
+    border-radius: 8px;
+}
+
+#page-header #search {
+    font-size: 35px;
+    color: #000;
+    font-family: arial;
+}
+
+#page-header #search .glyphicon{
+    margin-left: 8px;
+    font-size: 26px;
+}
+
+#title-text{
+    font-weight: bolder;
+    margin-left: 15px;
+}
+
+#textbox-container input{
+    font-size: 34px;
+    width: 400px;
+    height: 75px;
+    font-weight: bolder;
+}
+
 #input-container{
     margin: 25px
 }
@@ -27,14 +65,20 @@ body{
 
 #searchButton{
     color: white;
-    background: #1A237E;
-    border-color: #1A237E;
+    background: #01579B;
+    border-color: #01579B;
+    font-size: 22px;
 }
 
 #stopButton{
     color: white;
     background: #d43f3a;
-    border-color: #1A237E;
+    border-color: #d43f3a;
+    font-size: 22px;
+}
+
+#stopButton .glyphicon{
+    margin-right: 5px;
 }
 
 .notta-button:hover{
@@ -57,11 +101,6 @@ body{
     color: white;
 }
 
-#sort-options-container{
-    margin-left: 35px;
-    margin-bottom: 15px;
-}
-
 #sort-options-container label{
     margin-left: 15px;
 }
@@ -78,19 +117,10 @@ body{
     font-weight: bold;
 }
 
-#sort-options div{
-    display: inline-block;
-}
-
 #sort-options{
     margin-left: 35px;
     margin-bottom: 25px;
     display: inline-block !important;
-}
-
-#sort-options #filter-by-label{
-    font-weight: bolder;
-    font-size: 20px;
 }
 
 .clickable{
@@ -112,12 +142,19 @@ body{
 }
 
 #results{
-    margin-left: 15px;
+    margin-left: 10px;
+}
+
+#results-label-container{
+    margin-top: -25px;
+    margin-bottom: 20px;
 }
 
 #search-results-header{
-    font-size: 18px;
+    font-size: 24px;
+    font-weight: bold;
     margin-top: 4px;
+    color: #01579B ;
 }
 
 .panel-heading{
@@ -128,4 +165,58 @@ body{
 
 .isActive{
     box-shadow: 5px 10px 18px black inset;
+}
+
+#durationContainer, #dateFilter, #minRatingContainer{
+    margin-top: 12px;
+}
+
+#durationContainer #durationFilterHeader, #minRatingContainer #minRatingHeader, #dateFilter #dateFilterHeader, #maxDislikesContainer #maxDislikesHeader{
+    display: inline;
+}
+
+#durationContainer input, #dateFilter input, #maxDislikesContainer input, #minRatingContainer input{
+    display: inline-block;
+}
+
+#dateFilter input, #maxDislikesContainer input, #minRatingContainer input{
+    width: 200px;
+}
+
+#durationContainer input{
+    width: 100px;
+}
+
+.sort-filter-header{
+    background:#01579B;
+    padding: 8px;
+}
+
+.sort-filter-header-content{
+    color: white;
+    margin-left: 15px;
+}
+
+.sort-content, .filter-content{
+    padding: 12px;
+    background: #E0E0E0  ;
+}
+
+.filter-content{
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.filter-content .glyphicon{
+    margin-right: 4px;
+}
+
+#maxDislikesHeader, #dateFilterHeader, #durationFilterHeader, #minRatingHeader{
+    font-weight: bolder;
+    margin-right: 10px;
+}
+
+#sort-and-filter{
+    margin-left: 55px;
+    border-radius: 12px;
 }
