@@ -52,8 +52,8 @@
 
                 <div id="durationContainer">
                     <div id="durationFilterHeader"><span class="glyphicon glyphicon-time"></span>Duration</div>
-                    <input ng-model="longerThanFilter" type="text" class="form-control" placeholder="Only videos longer than (minutes)" ng-keyup="filter()"/>
-                    <input ng-model="lessThanFilter" type="text" class="form-control" placeholder="Only videos less than (minutes)" ng-keyup="filter()" />
+                    <input ng-model="longerThanFilter" type="text" class="form-control" placeholder="Greater than (mins)" ng-keyup="filter()"/>
+                    <input ng-model="lessThanFilter" type="text" class="form-control" placeholder="Less than (mins)" ng-keyup="filter()" />
                 </div>
             </div>
         </div>
@@ -76,7 +76,9 @@
                 </td>
                 <td>
                     <div class="video-details-container">
-                        <div class="videoTitle">{{video.title}}</div>
+                        <a ng-href="{{'https://www.youtube.com/watch?v=' + video.videoId}}" target="_blank">
+                            <div class="videoTitle">{{video.title}}</div>
+                        </a>
                         <div class="duration">{{video.duration ? video.duration + " (~" + video.durationMinutes + " minutes)" : ""}}</div>
                         <div class="created">{{video.created | date:'MM-dd-yyyy'}}</div>
                         <div class="rating"><small>Rating</small> {{video.pctLikes | number:2}}</div>
