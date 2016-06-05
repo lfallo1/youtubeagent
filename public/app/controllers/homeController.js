@@ -90,6 +90,15 @@
                 if(isNaN(video.durationMinutes) || !video.durationMinutes){
                   return true;
                 }
+
+                if($scope.longerThanFilter >= $scope.lessThanFilter || $scope.lessThanFilter < 0){
+                    $scope.lessThanFilter = '';
+                }
+
+                if($scope.longerThanFilter < 0){
+                    $scope.longerThanFilter = 0;
+                }
+
                 return (isNaN($scope.longerThanFilter) || video.durationMinutes >= $scope.longerThanFilter) &&
                     (isNaN($scope.lessThanFilter) || !$scope.lessThanFilter || video.durationMinutes <= $scope.lessThanFilter)
             };
