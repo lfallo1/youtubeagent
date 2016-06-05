@@ -23,8 +23,8 @@
                 $scope.sort();
             };
 
-            var apikey = "AIzaSyAdvomXbhYg3GeBGymbPVBg-aRJeIOfFyQ";
-            //var apikey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
+            //var apikey = "AIzaSyAdvomXbhYg3GeBGymbPVBg-aRJeIOfFyQ";
+            var apikey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
             var sortOrders = [];
 
             function SortOption(value, direction, glyph, displayName){
@@ -77,13 +77,21 @@
                 $scope.filteredResults = $scope.searchResults.filter(function(d){
                    if((!$scope.minDislikes || d.dislikes <= $scope.minDislikes) &&
                        (!$scope.minRating || d.pctLikes >= $scope.minRating) &&
-                       (!$scope.minDate || d.created >= $scope.minDate) &&
-                       (isNaN(d.durationMinutes) ||
-                       ((isNaN($scope.longerThanFilter) || d.durationMinutes >= $scope.longerThanFilter) &&
-                       (isNaN($scope.lessThanFilter) || d.durationMinutes <= $scope.lessThanFilter)))){
+                       (!$scope.minDate || d.created >= $scope.minDate) && durationFilter(d)){
                        return d;
                    }
                 });
+            };
+
+            var durationFilter = function(video){
+                //for clarity split up statements
+                //1. if video.durationMinutes is not defined, then return true immediately
+                //2. otherwise check the filters
+                if(isNaN(video.durationMinutes) || !video.durationMinutes){
+                  return true;
+                }
+                return (isNaN($scope.longerThanFilter) || video.durationMinutes >= $scope.longerThanFilter) &&
+                    (isNaN($scope.lessThanFilter) || !$scope.lessThanFilter || video.durationMinutes <= $scope.lessThanFilter)
             };
 
             var fetchResults = function(){
