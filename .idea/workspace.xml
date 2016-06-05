@@ -41,21 +41,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="timeService.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="timeService.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/app/services/timeService.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.37724552">
-              <caret line="21" column="80" selection-start-line="21" selection-start-column="80" selection-end-line="21" selection-end-column="80" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="39" column="34" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="34" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="homeController.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="homeController.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/app/controllers/homeController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="202" column="54" selection-start-line="200" selection-start-column="63" selection-end-line="202" selection-end-column="54" />
+            <state vertical-scroll-proportion="0.8083832">
+              <caret line="27" column="32" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -175,8 +175,8 @@
         <option value="$PROJECT_DIR$/server/views/index.html" />
         <option value="$PROJECT_DIR$/public/app/css/style.css" />
         <option value="$PROJECT_DIR$/server/views/partial/home.html" />
-        <option value="$PROJECT_DIR$/public/app/controllers/homeController.js" />
         <option value="$PROJECT_DIR$/public/app/services/timeService.js" />
+        <option value="$PROJECT_DIR$/public/app/controllers/homeController.js" />
       </list>
     </option>
   </component>
@@ -805,6 +805,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/app/services/timeService.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="39" column="34" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/server/views/partial/home.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-8.125">
@@ -815,16 +823,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/app/controllers/homeController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="202" column="54" selection-start-line="200" selection-start-column="63" selection-end-line="202" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/app/services/timeService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.37724552">
-          <caret line="21" column="80" selection-start-line="21" selection-start-column="80" selection-end-line="21" selection-end-column="80" />
+        <state vertical-scroll-proportion="0.8083832">
+          <caret line="27" column="32" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
           <folding />
         </state>
       </provider>
