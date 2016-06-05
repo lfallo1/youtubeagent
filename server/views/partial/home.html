@@ -79,7 +79,7 @@
                         <a ng-href="{{'https://www.youtube.com/watch?v=' + video.videoId}}" target="_blank">
                             <div class="videoTitle">{{video.title}}</div>
                         </a>
-                        <div class="duration">{{video.duration ? video.duration + " (~" + video.durationMinutes + " minutes)" : ""}}</div>
+                        <div class="duration">{{video.duration}}</div>
                         <div class="created">{{video.created | date:'MM-dd-yyyy'}}</div>
                         <div class="rating"><small>Rating</small> {{video.pctLikes | number:2}}</div>
                         <div class="view-count"><small>Views</small> {{video.viewCount}}</div>
