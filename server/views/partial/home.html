@@ -5,11 +5,13 @@
 <div id="input-container" class="row">
 
     <div id="textbox-container" class="form-group col-md-4">
-        <div class="input-group">
-            <input class="form-control" type="text" ng-model="searchParam" placeholder="search term here..." />
-            <div id="searchButton" ng-if="!fetching" class="notta-button input-group-addon" ng-click="doSearch()"><span class="glyphicon glyphicon-search"></span>Search</div>
-            <div id="stopButton" ng-if="fetching" class="notta-button input-group-addon" ng-click="interrupt()"><span class="glyphicon glyphicon-stop"></span>Stop</div>
-        </div>
+        <form ng-submit="doSearch()">
+            <div class="input-group">
+                <input class="form-control" type="text" ng-model="searchParam" placeholder="search term here..."  />
+                <div id="searchButton" ng-if="!fetching" class="notta-button input-group-addon" ng-click="doSearch()"><span class="glyphicon glyphicon-search"></span>Search</div>
+                <div id="stopButton" ng-if="fetching" class="notta-button input-group-addon" ng-click="interrupt()"><span class="glyphicon glyphicon-stop"></span>Stop</div>
+            </div>
+        </form>
     </div>
 </div>
 

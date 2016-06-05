@@ -39,6 +39,10 @@
             };
 
             $scope.doSearch = function(){
+                if($scope.fetching){
+                    return;
+                }
+                
                 $scope.searchParam = $scope.searchParam.trim();
                 if($scope.searchParam){
 
