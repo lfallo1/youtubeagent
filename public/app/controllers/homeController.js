@@ -80,7 +80,7 @@
                        (!$scope.minDate || d.created >= $scope.minDate) &&
                        (isNaN(d.durationMinutes) ||
                        ((isNaN($scope.longerThanFilter) || d.durationMinutes >= $scope.longerThanFilter) &&
-                       (isNaN($scope.shorterThanFilter) || d.durationMinutes <= $scope.shorterThanFilter)))){
+                       (isNaN($scope.lessThanFilter) || d.durationMinutes <= $scope.lessThanFilter)))){
                        return d;
                    }
                 });
