@@ -42,7 +42,7 @@
                 if($scope.fetching){
                     return;
                 }
-                
+
                 $scope.searchParam = $scope.searchParam.trim();
                 if($scope.searchParam){
 
@@ -195,45 +195,47 @@
                         //for each video, add to the list
                         for(var i = 0; i < data.length; i++){
                             var datastats = data[i].data;
-                            var title = datastats.items[0].snippet.title;
-                            var created = new Date(datastats.items[0].snippet.publishedAt);
-                            var id = datastats.items[0].id;
+                            if(datastats.items[0]){
+                                var title = datastats.items[0].snippet.title;
+                                var created = new Date(datastats.items[0].snippet.publishedAt);
+                                var id = datastats.items[0].id;
 
-                            //format the pct likes
-                            var pctLikes;
-                            if(datastats.items[0].statistics.likeCount){
-                                pctLikes = (Number(datastats.items[0].statistics.likeCount) / (Number(datastats.items[0].statistics.likeCount) + Number(datastats.items[0].statistics.dislikeCount))) * 100
-                            }
-                            else if(datastats.items[0].statistics.dislikeCount){
-                                pctLikes = 0;
-                            }
-                            else{
-                                pctLikes = undefined;
-                            }
+                                //format the pct likes
+                                var pctLikes;
+                                if(datastats.items[0].statistics.likeCount){
+                                    pctLikes = (Number(datastats.items[0].statistics.likeCount) / (Number(datastats.items[0].statistics.likeCount) + Number(datastats.items[0].statistics.dislikeCount))) * 100
+                                }
+                                else if(datastats.items[0].statistics.dislikeCount){
+                                    pctLikes = 0;
+                                }
+                                else{
+                                    pctLikes = undefined;
+                                }
 
-                            var viewCount = datastats.items[0].statistics.viewCount;
-                            var likes = datastats.items[0].statistics.likeCount;
-                            var dislikes = datastats.items[0].statistics.dislikeCount;
+                                var viewCount = datastats.items[0].statistics.viewCount;
+                                var likes = datastats.items[0].statistics.likeCount;
+                                var dislikes = datastats.items[0].statistics.dislikeCount;
 
-                            //extract duration from ISO 8601 (PT#H#M#S)
-                            var duration = {};
-                            if(datastats.items[0].contentDetails){
-                                duration = TimeService.isoToDuration(datastats.items[0].contentDetails.duration);
+                                //extract duration from ISO 8601 (PT#H#M#S)
+                                var duration = {};
+                                if(datastats.items[0].contentDetails){
+                                    duration = TimeService.isoToDuration(datastats.items[0].contentDetails.duration);
+                                }
+
+                                //add object to search results
+                                $scope.searchResults.push({
+                                    "title" : title,
+                                    "created" : created,
+                                    "videoId" : id,
+                                    "pctLikes" : pctLikes || 0,
+                                    "viewCount" : Number(viewCount),
+                                    "likes" : Number(likes) || 0,
+                                    "dislikes" : Number(dislikes) || 0,
+                                    "thumbnail" : datastats.items[0].snippet.thumbnails.medium,
+                                    "duration" : duration.formatted || null,
+                                    "durationMinutes" : duration.approxMinutes || null
+                                });
                             }
-
-                            //add object to search results
-                            $scope.searchResults.push({
-                                "title" : title,
-                                "created" : created,
-                                "videoId" : id,
-                                "pctLikes" : pctLikes || 0,
-                                "viewCount" : Number(viewCount),
-                                "likes" : Number(likes) || 0,
-                                "dislikes" : Number(dislikes) || 0,
-                                "thumbnail" : datastats.items[0].snippet.thumbnails.medium,
-                                "duration" : duration.formatted || null,
-                                "durationMinutes" : duration.approxMinutes || null
-                            });
                         }
 
                         $scope.sort();
