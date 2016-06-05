@@ -13,13 +13,18 @@
                 var minutes = !this.m ? '00' : Number(this.m) < 10 ? '0' + this.m : this.m;
                 var seconds = !this.s ? '00' : Number(this.s) < 10 ? '0' + this.s : this.s;
                 return hours + ':' + minutes + ':' + seconds;
-            }
+            };
+
+            this.minutes = function(){
+                var hours = this.h || 0;
+                var minutes = this.m || 0;
+                var seconds = this.s || 0;
+                return (Number(hours) * 60) + Number(minutes) + (Number(seconds) / 60);
+            };
         }
 
         service.isoToDuration = function(duration) {
             var hours, minutes, seconds = null;
-            var approxMinutes = 0;
-
             var stripped = duration.replace("PT","");
             var number = '';
             var char = '';
@@ -28,15 +33,12 @@
                 if (isNaN(char)) {
                     switch (char) {
                         case 'H':
-                            approxMinutes += Number(number) * 60;
                             hours = number;
                             break;
                         case 'M':
-                            approxMinutes += Number(number);
                             minutes = number;
                             break;
                         case 'S':
-                            approxMinutes += 1;
                             seconds = number;
                             break;
                         default:
@@ -51,7 +53,7 @@
             time = new MyTime(hours, minutes, seconds);
             return {
                 'formatted' : time.formatted(),
-                'approxMinutes' : approxMinutes
+                'approxMinutes' : time.minutes()
             }
         };
 
