@@ -28,6 +28,10 @@ app.get('/partials/:name', function(req, res){
     res.render('partial/' + name);
 });
 
+//API
+app.use('/api/youtube', youtubeAPI);
+
+
 // redirect all others to the index (HTML5 history)
 app.get('*', function(req, res){
  res.render('index.html')
