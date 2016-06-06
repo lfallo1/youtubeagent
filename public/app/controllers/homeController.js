@@ -1,7 +1,7 @@
 (function(){
     angular.module('youtubeSearchApp').controller('HomeCtrl', [
-        '$rootScope', '$scope', '$state', '$http', '$q', '$log', '$timeout', 'TimeService',
-        function($rootScope, $scope, $state, $http, $q, $log, $timeout, TimeService){
+        '$rootScope', '$scope', '$state', '$http', '$q', '$log', '$timeout', 'TimeService', 'toaster',
+        function($rootScope, $scope, $state, $http, $q, $log, $timeout, TimeService, toaster){
 
 
             var init = function(){
@@ -36,6 +36,13 @@
 
             $scope.interrupt = function(){
               $scope.stop = true;
+                stopSearch('Search stopped', 'info');
+                $scope.fetching = false;
+            };
+
+            var stopSearch = function(msg, toasterType){
+                $scope.fetching = false;
+                toaster.pop(toasterType, '', msg);
             };
 
             $scope.doSearch = function(){
@@ -111,7 +118,6 @@
             var fetchResults = function(){
 
                 if($scope.stop){
-                    $scope.fetching = false;
                     return;
                 }
 
@@ -128,7 +134,7 @@
 
                     //no results, then finish
                     if(!res || res.length === 0){
-                        $scope.fetching = false;
+                        stopSearch('Finished search', 'info');
                         return;
                     }
 
@@ -140,7 +146,7 @@
                         }
                     });
                     if(sum === 0){
-                        $scope.fetching = false;
+                        stopSearch('Finished search', 'info');
                         return;
                     }
 
@@ -180,7 +186,7 @@
 
                     //if all the resulst were duplicates of already existing items in searchResults array, then finish
                     if(nonDuplicates.length === 0){
-                        $scope.fetching = false;
+                        stopSearch('Finished search', 'info');
                         return;
                     }
 
@@ -246,13 +252,17 @@
                                     return d;
                                 }
                             }).length === 0){
-                            $scope.fetching = false;
+                            stopSearch('Search finished', 'info');
                             return;
                         }
 
                         fetchResults();
+                    }, function(err){
+                        stopSearch('Service unavailable', 'error');
                     })
 
+                }, function(err){
+                    stopSearch('Service unavailable', 'error');
                 });
             };
 

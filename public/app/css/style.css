@@ -36,7 +36,6 @@ body{
 
 #textbox-container input{
     font-size: 34px;
-    width: 400px;
     height: 75px;
     font-weight: bolder;
 }
@@ -199,7 +198,12 @@ body{
 
 .sort-content, .filter-content{
     padding: 12px;
-    background: #E0E0E0  ;
+    border: 1px solid rgba(0,0,0,0.2)
+}
+
+#sort-options-container, #filter-options-container{
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .filter-content{
@@ -217,6 +221,5 @@ body{
 }
 
 #sort-and-filter{
-    margin-left: 55px;
-    border-radius: 12px;
+    margin-left: 0px auto;
 }

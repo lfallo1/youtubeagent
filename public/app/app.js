@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('youtubeSearchApp', ['ui.router','ngRoute']).
+angular.module('youtubeSearchApp', ['ui.router','ngRoute', 'ngAnimate', 'toaster']).
     config(['$stateProvider', '$locationProvider', '$urlRouterProvider', '$routeProvider', function($stateProvider, $locationProvider, $urlRouterProvider, $routeProvider) {
 
         $routeProvider.
