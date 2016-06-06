@@ -43,6 +43,10 @@
                     <div id="maxDislikesHeader"><span class="glyphicon glyphicon-thumbs-down"></span>Dislikes</div>
                     <input ng-model="minDislikes" type="number" class="form-control" ng-keyup="filter()" placeholder="Maximum dislikes" />
                 </div>
+                <div id="minViewsContainer">
+                    <div id="minViewsHeader"><span class="glyphicon glyphicon-user"></span>MinViews</div>
+                    <input ng-model="minViews" type="number" class="form-control" ng-keyup="filter()" placeholder="Minimum views" />
+                </div>
                 <div id="minRatingContainer">
                     <div id="minRatingHeader"><span class="glyphicon glyphicon-star"></span>MinRating</div>
                     <input ng-model="minRating" type="number" class="form-control" ng-keyup="filter()" placeholder="Minimum rating (0 to 100)" />

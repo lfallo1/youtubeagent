@@ -167,19 +167,19 @@ body{
     box-shadow: 5px 10px 18px black inset;
 }
 
-#durationContainer, #dateFilter, #minRatingContainer{
+#durationContainer, #dateFilter, #minRatingContainer, #minViewsContainer{
     margin-top: 12px;
 }
 
-#durationContainer #durationFilterHeader, #minRatingContainer #minRatingHeader, #dateFilter #dateFilterHeader, #maxDislikesContainer #maxDislikesHeader{
+#minViewsContainer #minViewsHeader, #durationContainer #durationFilterHeader, #minRatingContainer #minRatingHeader, #dateFilter #dateFilterHeader, #maxDislikesContainer #maxDislikesHeader{
     display: inline;
 }
 
-#durationContainer input, #dateFilter input, #maxDislikesContainer input, #minRatingContainer input{
+#minViewsContainer input, #durationContainer input, #dateFilter input, #maxDislikesContainer input, #minRatingContainer input{
     display: inline-block;
 }
 
-#dateFilter input, #maxDislikesContainer input, #minRatingContainer input{
+#minViewsContainer input, #dateFilter input, #maxDislikesContainer input, #minRatingContainer input{
     width: 200px;
 }
 
@@ -211,7 +211,7 @@ body{
     margin-right: 4px;
 }
 
-#maxDislikesHeader, #dateFilterHeader, #durationFilterHeader, #minRatingHeader{
+#maxDislikesHeader, #dateFilterHeader, #durationFilterHeader, #minRatingHeader, #minViewsHeader{
     font-weight: bolder;
     margin-right: 10px;
 }

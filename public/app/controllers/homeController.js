@@ -74,12 +74,13 @@
             };
 
             $scope.filter = function(){
-                if(!$scope.minDislikes && !$scope.minDate && !$scope.shorterThanFilter && !$scope.longerThanFilter && !$scope.minRating){
+                if(!$scope.minViews && !$scope.minDislikes && !$scope.minDate && !$scope.shorterThanFilter && !$scope.longerThanFilter && !$scope.minRating){
                     $scope.filteredResults = $scope.searchResults;
                     return;
                 }
                 $scope.filteredResults = $scope.searchResults.filter(function(d){
                    if((!$scope.minDislikes || d.dislikes <= $scope.minDislikes) &&
+                       (!$scope.minViews || d.viewCount >= $scope.minViews) &&
                        (!$scope.minRating || d.pctLikes >= $scope.minRating) &&
                        (!$scope.minDate || d.created >= $scope.minDate) && durationFilter(d)){
                        return d;
