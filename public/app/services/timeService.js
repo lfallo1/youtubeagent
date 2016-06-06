@@ -3,6 +3,14 @@
 
         var service = {};
 
+        /**
+         * Time Object - takes an hour, minute, second.
+         * contains two functions. one returns a formatted duration string, and the other returns the duration in minutes
+         * @param h
+         * @param m
+         * @param s
+         * @constructor
+         */
         function MyTime(h,m,s){
             this.h = h;
             this.m = m;
@@ -23,6 +31,13 @@
             };
         }
 
+        /**
+         * convert time from iso 8601 to a duration in minutes and formatted duration string (hh:mm:ss)
+         * iso 8601 comes in form PT#H#M#S, where the # represents the numerical value of each duration part.
+         * i.e., PT4H13M59S represents a video 4hours 13mins 59secs
+         * @param duration
+         * @returns {{formatted, approxMinutes}}
+         */
         service.isoToDuration = function(duration) {
             var hours, minutes, seconds = null;
             var stripped = duration.replace("PT","");
