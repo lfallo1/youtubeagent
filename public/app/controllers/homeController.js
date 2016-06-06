@@ -23,8 +23,8 @@
                 $scope.sort();
             };
 
-            var apikey = "AIzaSyAdvomXbhYg3GeBGymbPVBg-aRJeIOfFyQ";
-            //var apikey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
+            //var apikey = "AIzaSyAdvomXbhYg3GeBGymbPVBg-aRJeIOfFyQ";
+            var apikey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
             var sortOrders = [];
 
             function SortOption(value, direction, glyph, displayName){
@@ -193,40 +193,52 @@
                     //query the statistics for each video
                     var promises = [];
                     for(var i = 0; i < nonDuplicates.length; i++){
-                        promises.push($http.get('https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id='+ nonDuplicates[i].id.videoId +'&key=' + apikey));
+                        var count = 0;
+                        var idList = [];
+                        while(count < 50 && i < nonDuplicates.length){
+                            idList.push(nonDuplicates[i].id.videoId);
+                            i++;
+                            count++;
+                        }
+                        promises.push($http.get('https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id='+ idList.toString() +'&key=' + apikey));
                     }
 
                     //wait for reequest to finish
-                    $q.all(promises).then(function(data){
+                    $q.all(promises).then(function(res){
+
+                        var data = [];
+                        for(var i = 0; i < res.length; i++){
+                            data = data.concat(res[i].data.items);
+                        }
 
                         //for each video, add to the list
                         for(var i = 0; i < data.length; i++){
-                            var datastats = data[i].data;
-                            if(datastats.items[0]){
-                                var title = datastats.items[0].snippet.title;
-                                var created = new Date(datastats.items[0].snippet.publishedAt);
-                                var id = datastats.items[0].id;
+                            var datastats = data[i];
+                            if(datastats){
+                                var title = datastats.snippet.title;
+                                var created = new Date(datastats.snippet.publishedAt);
+                                var id = datastats.id;
 
                                 //format the pct likes
                                 var pctLikes;
-                                if(datastats.items[0].statistics.likeCount){
-                                    pctLikes = (Number(datastats.items[0].statistics.likeCount) / (Number(datastats.items[0].statistics.likeCount) + Number(datastats.items[0].statistics.dislikeCount))) * 100
+                                if(datastats.statistics.likeCount){
+                                    pctLikes = (Number(datastats.statistics.likeCount) / (Number(datastats.statistics.likeCount) + Number(datastats.statistics.dislikeCount))) * 100
                                 }
-                                else if(datastats.items[0].statistics.dislikeCount){
+                                else if(datastats.statistics.dislikeCount){
                                     pctLikes = 0;
                                 }
                                 else{
                                     pctLikes = undefined;
                                 }
 
-                                var viewCount = datastats.items[0].statistics.viewCount;
-                                var likes = datastats.items[0].statistics.likeCount;
-                                var dislikes = datastats.items[0].statistics.dislikeCount;
+                                var viewCount = datastats.statistics.viewCount;
+                                var likes = datastats.statistics.likeCount;
+                                var dislikes = datastats.statistics.dislikeCount;
 
                                 //extract duration from ISO 8601 (PT#H#M#S)
                                 var duration = {};
-                                if(datastats.items[0].contentDetails){
-                                    duration = TimeService.isoToDuration(datastats.items[0].contentDetails.duration);
+                                if(datastats.contentDetails){
+                                    duration = TimeService.isoToDuration(datastats.contentDetails.duration);
                                 }
 
                                 //add object to search results
@@ -238,7 +250,7 @@
                                     "viewCount" : Number(viewCount),
                                     "likes" : Number(likes) || 0,
                                     "dislikes" : Number(dislikes) || 0,
-                                    "thumbnail" : datastats.items[0].snippet.thumbnails.medium,
+                                    "thumbnail" : datastats.snippet.thumbnails.medium,
                                     "duration" : duration.formatted || null,
                                     "durationMinutes" : duration.approxMinutes || null
                                 });
