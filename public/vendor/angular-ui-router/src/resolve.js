@@ -236,7 +236,7 @@ function $Resolve(  $q,    $injector) {
    * routes.
    *
    * @param {object} invocables functions to invoke or 
-   * `$injector` services to fetch.
+   * `$injector` webservices to fetch.
    * @param {object} locals  values to make available to the injectables
    * @param {object} parent  a promise returned by another call to `$resolve`.
    * @param {object} self  the `this` for the invoked methods

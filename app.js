@@ -1,6 +1,8 @@
 var express = require('express'),
     bodyParser = require('body-parser');
 
+//var youtubeAPI = require('./server/webservices/youtubeAPI.js');
+
 var app = express();
 
 var port = process.env.PORT || 3000;
@@ -29,7 +31,7 @@ app.get('/partials/:name', function(req, res){
 });
 
 //API
-app.use('/api/youtube', youtubeAPI);
+//app.use('/api/youtube', youtubeAPI);
 
 
 // redirect all others to the index (HTML5 history)

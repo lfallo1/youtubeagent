@@ -3461,7 +3461,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  * }]
  * ```
  *
- * The nice thing about JS-based animations is that we can inject other services and make use of advanced animation libraries such as
+ * The nice thing about JS-based animations is that we can inject other webservices and make use of advanced animation libraries such as
  * greensock.js and velocity.js.
  *
  * If our animation code class-based (meaning that something like `ngClass`, `ngHide` and `ngShow` triggers it) then we can still define

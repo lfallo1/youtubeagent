@@ -542,7 +542,7 @@ function $Resolve(  $q,    $injector) {
    * routes.
    *
    * @param {object} invocables functions to invoke or 
-   * `$injector` services to fetch.
+   * `$injector` webservices to fetch.
    * @param {object} locals  values to make available to the injectables
    * @param {object} parent  a promise returned by another call to `$resolve`.
    * @param {object} self  the `this` for the invoked methods
@@ -1469,7 +1469,7 @@ function $UrlMatcherFactory() {
    * </pre>
    *
    * This is a more complex example of a type that relies on dependency injection to
-   * interact with services, and uses the parameter name from the URL to infer how to
+   * interact with webservices, and uses the parameter name from the URL to infer how to
    * handle encoding and decoding parameter values:
    *
    * <pre>
@@ -1478,8 +1478,8 @@ function $UrlMatcherFactory() {
    * // a backend API:
    * $urlMatcherFactoryProvider.type('dbObject', {}, function(Users, Posts) {
    *
-   *   // Matches up services to URL parameter names
-   *   var services = {
+   *   // Matches up webservices to URL parameter names
+   *   var webservices = {
    *     user: Users,
    *     post: Posts
    *   };
@@ -1492,11 +1492,11 @@ function $UrlMatcherFactory() {
    *     decode: function(value, key) {
    *       // Look up the object by ID, using the parameter
    *       // name (key) to call the correct service
-   *       return services[key].findById(value);
+   *       return webservices[key].findById(value);
    *     },
    *     is: function(object, key) {
    *       // Check that object is a valid dbObject
-   *       return angular.isObject(object) && object.id && services[key];
+   *       return angular.isObject(object) && object.id && webservices[key];
    *     }
    *     equals: function(a, b) {
    *       // Check the equality of decoded objects by comparing
@@ -1779,7 +1779,7 @@ function $UrlRouterProvider(   $locationProvider,   $urlMatcherFactory) {
    * </pre>
    *
    * @param {object} rule Handler function that takes `$injector` and `$location`
-   * services as arguments. You can use them to return a valid path as a string.
+   * webservices as arguments. You can use them to return a valid path as a string.
    *
    * @return {object} `$urlRouterProvider` - `$urlRouterProvider` instance
    */
@@ -1816,7 +1816,7 @@ function $UrlRouterProvider(   $locationProvider,   $urlMatcherFactory) {
    *
    * @param {string|object} rule The url path you want to redirect to or a function 
    * rule that returns the url path. The function version is passed two params: 
-   * `$injector` and `$location` services, and must return a url string.
+   * `$injector` and `$location` webservices, and must return a url string.
    *
    * @return {object} `$urlRouterProvider` - `$urlRouterProvider` instance
    */
@@ -3324,7 +3324,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
          * @eventType broadcast on root scope
          * @description
          * Fired when an **error occurs** during transition. It's important to note that if you
-         * have any errors in your resolve functions (javascript errors, non-existent services, etc)
+         * have any errors in your resolve functions (javascript errors, non-existent webservices, etc)
          * they will not throw traditionally. You must listen for this $stateChangeError event to
          * catch **ALL** errors.
          *

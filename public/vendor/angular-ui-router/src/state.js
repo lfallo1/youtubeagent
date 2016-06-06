@@ -1175,7 +1175,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
          * @eventType broadcast on root scope
          * @description
          * Fired when an **error occurs** during transition. It's important to note that if you
-         * have any errors in your resolve functions (javascript errors, non-existent services, etc)
+         * have any errors in your resolve functions (javascript errors, non-existent webservices, etc)
          * they will not throw traditionally. You must listen for this $stateChangeError event to
          * catch **ALL** errors.
          *

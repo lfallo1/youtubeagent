@@ -799,7 +799,7 @@ function $UrlMatcherFactory() {
    * </pre>
    *
    * This is a more complex example of a type that relies on dependency injection to
-   * interact with services, and uses the parameter name from the URL to infer how to
+   * interact with webservices, and uses the parameter name from the URL to infer how to
    * handle encoding and decoding parameter values:
    *
    * <pre>
@@ -808,8 +808,8 @@ function $UrlMatcherFactory() {
    * // a backend API:
    * $urlMatcherFactoryProvider.type('dbObject', {}, function(Users, Posts) {
    *
-   *   // Matches up services to URL parameter names
-   *   var services = {
+   *   // Matches up webservices to URL parameter names
+   *   var webservices = {
    *     user: Users,
    *     post: Posts
    *   };
@@ -822,11 +822,11 @@ function $UrlMatcherFactory() {
    *     decode: function(value, key) {
    *       // Look up the object by ID, using the parameter
    *       // name (key) to call the correct service
-   *       return services[key].findById(value);
+   *       return webservices[key].findById(value);
    *     },
    *     is: function(object, key) {
    *       // Check that object is a valid dbObject
-   *       return angular.isObject(object) && object.id && services[key];
+   *       return angular.isObject(object) && object.id && webservices[key];
    *     }
    *     equals: function(a, b) {
    *       // Check the equality of decoded objects by comparing
