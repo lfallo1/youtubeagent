@@ -216,6 +216,8 @@
                             var datastats = data[i];
                             if(datastats){
                                 var title = datastats.snippet.title;
+                                var channelTitle = datastats.snippet.channelTitle;
+                                var channelId = datastats.snippet.channelId;
                                 var created = new Date(datastats.snippet.publishedAt);
                                 var id = datastats.id;
 
@@ -244,6 +246,8 @@
                                 //add object to search results
                                 $scope.searchResults.push({
                                     "title" : title,
+                                    "channelTitle" : channelTitle,
+                                    "channelId" : channelId,
                                     "created" : created,
                                     "videoId" : id,
                                     "pctLikes" : pctLikes || 0,
