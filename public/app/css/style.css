@@ -140,10 +140,6 @@ body{
     box-shadow: 7px 13px 18px black inset;
 }
 
-#results{
-    margin-left: 10px;
-}
-
 #results-label-container{
     margin-top: -25px;
     margin-bottom: 20px;
