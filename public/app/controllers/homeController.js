@@ -1,8 +1,16 @@
 (function(){
     angular.module('youtubeSearchApp').controller('HomeCtrl', [
-        '$rootScope', '$scope', '$state', '$http', '$q', '$log', '$timeout', 'TimeService', 'toaster',
-        function($rootScope, $scope, $state, $http, $q, $log, $timeout, TimeService, toaster){
+        '$rootScope', '$scope', '$state', '$http', '$q', '$log', '$timeout', 'TimeService', 'toaster', '$window',
+        function($rootScope, $scope, $state, $http, $q, $log, $timeout, TimeService, toaster, $window){
 
+            $scope.authorize = function(){
+                $window.open('https://accounts.google.com/o/oauth2/auth?client_id=613015363976-0aodg2ib3dmv8m2g7gmknnglg29cmir9.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauthcallback&scope=https://www.googleapis.com/auth/youtube&response_type=token');
+                //$http.post('https://accounts.google.com/o/oauth2/auth?client_id=613015363976-0aodg2ib3dmv8m2g7gmknnglg29cmir9.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000k&scope=https://www.googleapis.com/auth/youtube&response_type=token').then(function(res){
+                //   $log.debug(res);
+                //}, function(err){
+                //    $log.error(err);
+                //});
+            };
 
             var init = function(){
                 $scope.totalResults = 0;
