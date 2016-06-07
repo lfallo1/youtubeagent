@@ -37,25 +37,25 @@
             <div class="col-md-12 filter-content">
                 <div id="maxDislikesContainer">
                     <div id="maxDislikesHeader"><span class="glyphicon glyphicon-thumbs-down"></span>Dislikes</div>
-                    <input ng-model="minDislikes" type="number" class="form-control" ng-keyup="filter()" placeholder="Maximum dislikes" />
+                    <input ng-model="minDislikes" type="number" class="form-control" ng-blur="filter()" placeholder="Maximum dislikes" />
                 </div>
                 <div id="minViewsContainer">
                     <div id="minViewsHeader"><span class="glyphicon glyphicon-user"></span>MinViews</div>
-                    <input ng-model="minViews" type="number" class="form-control" ng-keyup="filter()" placeholder="Minimum views" />
+                    <input ng-model="minViews" type="number" class="form-control" ng-blur="filter()" placeholder="Minimum views" />
                 </div>
                 <div id="minRatingContainer">
                     <div id="minRatingHeader"><span class="glyphicon glyphicon-star"></span>MinRating</div>
-                    <input ng-model="minRating" type="number" class="form-control" ng-keyup="filter()" placeholder="Minimum rating (0 to 100)" />
+                    <input ng-model="minRating" type="number" class="form-control" ng-blur="filter()" placeholder="Minimum rating (0 to 100)" />
                 </div>
                 <div id="dateFilter">
                     <div id="dateFilterHeader"><span class="glyphicon glyphicon-calendar"></span>Date</div>
-                    <input type="date" class="form-control" ng-model="minDate" placeholder="Select earliest date" />
+                    <input type="date" ng-blur="filter()" class="form-control" ng-model="minDate" placeholder="Select earliest date" />
                 </div>
 
                 <div id="durationContainer">
                     <div id="durationFilterHeader"><span class="glyphicon glyphicon-time"></span>Duration</div>
-                    <input ng-model="longerThanFilter" type="number" class="form-control" placeholder="> (mins)" ng-keyup="filter()"/>
-                    <input ng-model="lessThanFilter" type="number" class="form-control" placeholder="< (mins)" ng-keyup="filter()" />
+                    <input ng-model="longerThanFilter" type="number" class="form-control" placeholder="> (mins)" ng-blur="filter()"/>
+                    <input ng-model="lessThanFilter" type="number" class="form-control" placeholder="< (mins)" ng-blur="filter()" />
                 </div>
             </div>
         </div>
