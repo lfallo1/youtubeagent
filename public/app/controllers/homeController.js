@@ -193,6 +193,8 @@
                     //query the statistics for each video
                     var promises = [];
                     for(var i = 0; i < nonDuplicates.length; i++){
+
+                        //create list of video id's (max list size of 50).
                         var count = 0;
                         var idList = [];
                         while(count < 50 && i < nonDuplicates.length){
@@ -200,6 +202,8 @@
                             i++;
                             count++;
                         }
+
+                        //create a promise with list of video id's for the batch request
                         promises.push($http.get('https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id='+ idList.toString() +'&key=' + apikey));
                     }
 
