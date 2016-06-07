@@ -1,4 +1,3 @@
-<div class="btn btn-lg btn-primary" ng-click="authorize()">Authorize</div>
 <div id="input-container" class="row">
 
     <div id="textbox-container" class="form-group col-md-12">
@@ -88,6 +87,10 @@
                         <div class="view-count"><small>Views</small> {{video.viewCount}}</div>
                         <div class="likes"><small>Likes</small> {{video.likes}}</div>
                         <div class="dislikes"><small>Dislikes</small> {{video.dislikes}}</div>
+                        <div id="youtube-members-only" ng-if="AuthService.isLoggedIn()">
+                            <hr />
+                            <button type="button" ng-click="addToPlaylist(video)">+ Add to playlist</button>
+                        </div>
                     </div>
                 </td>
             </tr>

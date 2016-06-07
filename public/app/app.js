@@ -21,8 +21,8 @@ angular.module('youtubeSearchApp', ['ui.router','ngRoute', 'ngAnimate', 'toaster
             });
 
         $locationProvider.html5Mode(true);
-    }]).run(['$rootScope', '$location', '$log', function($rootScope, $location, $log){
+    }]).run(['$rootScope', '$location', '$log', 'AuthService', function($rootScope, $location, $log, AuthService){
 
-        //TODO
+        $rootScope.AuthService = AuthService;
 
     }]);

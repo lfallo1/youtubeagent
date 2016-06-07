@@ -1,18 +1,76 @@
 (function(){
     angular.module('youtubeSearchApp').controller('HomeCtrl', [
-        '$rootScope', '$scope', '$state', '$http', '$q', '$log', '$timeout', 'TimeService', 'toaster', '$window',
-        function($rootScope, $scope, $state, $http, $q, $log, $timeout, TimeService, toaster, $window){
+        '$rootScope', '$scope', '$http', '$q', '$log', '$timeout', 'TimeService', 'toaster', '$window', '$modal', 'AuthService',
+        function($rootScope, $scope, $http, $q, $log, $timeout, TimeService, toaster, $window, $modal, AuthService){
 
-            $scope.authorize = function(){
-                $window.open('https://accounts.google.com/o/oauth2/auth?client_id=613015363976-0aodg2ib3dmv8m2g7gmknnglg29cmir9.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauthcallback&scope=https://www.googleapis.com/auth/youtube&response_type=token');
-                //$http.post('https://accounts.google.com/o/oauth2/auth?client_id=613015363976-0aodg2ib3dmv8m2g7gmknnglg29cmir9.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000k&scope=https://www.googleapis.com/auth/youtube&response_type=token').then(function(res){
-                //   $log.debug(res);
-                //}, function(err){
-                //    $log.error(err);
-                //});
+            //var apikey = "AIzaSyAdvomXbhYg3GeBGymbPVBg-aRJeIOfFyQ";
+            var apikey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
+            var sortOrders = [];
+
+            function SortOption(value, direction, glyph, displayName){
+                this.value = value;
+                this.direction = direction;
+                this.glyph = glyph;
+                this.displayName = displayName;
+            };
+
+            //api calls (refactor later)
+
+            var loadPlaylists = function(){
+                var playlists = [];
+                var auth = AuthService.getAuth();
+                var url = 'https://www.googleapis.com/youtube/v3/playlists?part=snippet,id&mine=true&access_token=' + auth.access_token;
+                $http.get(url).then(function(res){
+                    $scope.playlists = res.data.items;
+                    $log.info(res);
+                }, function(err){
+                    $log.error(err);
+                });
+            };
+
+            var generatePlaylistItemResource = function(video, playlist){
+                return {
+                    'snippet' : {
+                        'playlistId' : playlist.id,
+                        'resourceId' : {
+                            'videoId' : video.videoId,
+                            'kind' : 'youtube#video'
+                        }
+                    }
+                };
+            }
+
+            var isInPlaylist = function(video, playlist){
+              //TODO - maybe
+                return false;
+            };
+
+            $scope.addToPlaylist = function(video){
+                    //TODO after selecting playlist
+                    var selectedPlaylist = $scope.playlists[0];
+
+                    var auth = AuthService.getAuth();
+                    var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&access_token=' + auth.access_token;
+                    var playlistItemResource = generatePlaylistItemResource(video, selectedPlaylist);
+                    $http.post(url, playlistItemResource).then(function(res){
+                        $log.info(res);
+                    }, function(err){
+                        $log.error(err);
+                        //TODO handle different types of errors (i.e., not checking for dp items in playlists, so might be helpful to display a message here for that specific error)
+                    });
             };
 
             var init = function(){
+
+                //********* removing this eventually ************
+                if(!AuthService.isLoggedIn()){
+                    AuthService.authorize();
+                }
+                //***********************************************
+
+                if(AuthService.isLoggedIn()){
+                    loadPlaylists();
+                }
                 $scope.totalResults = 0;
                 $scope.searchParam = '';
                 $scope.searchResults = $scope.filteredResults = [];
@@ -29,17 +87,6 @@
             $scope.sortOptionChanged = function(option){
                 $scope.sortField = option.value;
                 $scope.sort();
-            };
-
-            var apikey = "AIzaSyAdvomXbhYg3GeBGymbPVBg-aRJeIOfFyQ";
-            //var apikey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
-            var sortOrders = [];
-
-            function SortOption(value, direction, glyph, displayName){
-                this.value = value;
-                this.direction = direction;
-                this.glyph = glyph;
-                this.displayName = displayName;
             };
 
             $scope.interrupt = function(){
