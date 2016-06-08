@@ -8,6 +8,16 @@
                 <div id="stopButton" ng-if="fetching" class="notta-button input-group-addon" ng-click="interrupt()"><span class="glyphicon glyphicon-stop"></span>Stop</div>
             </div>
         </form>
+        <div id="yearly-search-btn-wrapper" class="btn-group">
+            <label id="yearly-search-yes" class="btn btn-success" ng-model="yearlySearch" uib-btn-radio="true" uncheckable>On</label>
+            <label id="yearly-search-no" class="btn btn-success" ng-model="yearlySearch" uib-btn-radio="false" uncheckable>Off</label>
+            <div id="yearly-search-message">
+                <div id="yearly-search-label">
+                    Yearly Search
+                </div>
+                <span>Turning this feature on will decrease speed, but can lead to more results</span>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -47,10 +57,10 @@
                     <div id="minRatingHeader"><span class="glyphicon glyphicon-star"></span>Min Rating</div>
                     <input ng-model="minRating" type="number" class="form-control" ng-blur="filter()" placeholder="Minimum rating (0 to 100)" />
                 </div>
-                <div id="dateFilter">
-                    <div id="dateFilterHeader"><span class="glyphicon glyphicon-calendar"></span>Min Date</div>
-                    <input type="date" ng-blur="filter()" class="form-control" ng-model="minDate" placeholder="Select earliest date" />
-                </div>
+                <!--<div id="dateFilter">-->
+                    <!--<div id="dateFilterHeader"><span class="glyphicon glyphicon-calendar"></span>Min Date</div>-->
+                    <!--<input type="date" ng-blur="filter()" class="form-control" ng-model="minDate" placeholder="Select earliest date" />-->
+                <!--</div>-->
 
                 <div id="durationContainer">
                     <div id="durationFilterHeader"><span class="glyphicon glyphicon-time"></span>Duration</div>
@@ -87,6 +97,10 @@
                         <div class="view-count"><small>Views</small> {{video.viewCount}}</div>
                         <div class="likes"><small>Likes</small> {{video.likes}}</div>
                         <div class="dislikes"><small>Dislikes</small> {{video.dislikes}}</div>
+                        <!--<div id="youtube-members-only" ng-if="AuthService.isLoggedIn()">-->
+                            <!--<hr />-->
+                            <!--<button type="button" ng-click="addToPlaylist(video)">+ Add to playlist</button>-->
+                        <!--</div>-->
                     </div>
                 </td>
             </tr>

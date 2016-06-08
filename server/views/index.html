@@ -19,6 +19,7 @@
     <script type="text/javascript" src='bower/angular-resource/angular-resource.js'></script>
     <script type="text/javascript" src='bower/angular-animate/angular-animate.js'></script>
     <script type="text/javascript" src='bower/AngularJS-Toaster/toaster.js'></script>
+    <script type="text/javascript" src="bower/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <link href="bower/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="bower/AngularJS-Toaster/toaster.css" rel="stylesheet" />
 
@@ -27,9 +28,12 @@
 
     <!-- controllers -->
     <script type="text/javascript" src='static/app/controllers/homeController.js'></script>
+    <script type="text/javascript" src='static/app/controllers/authController.js'></script>
 
-    <!-- webservices -->
+    <!-- services -->
     <script type="text/javascript" src='static/app/services/timeService.js'></script>
+    <script type="text/javascript" src='static/app/services/authService.js'></script>
+    <script type="text/javascript" src='static/app/services/playlistService.js'></script>
 
     <!-- css -->
     <link href="css/style.css" rel="stylesheet" />
@@ -53,6 +57,12 @@
 <div id="page-header" class="row text-center">
     <div id="title-text"><span id="you">You</span><span id="tube">Tube</span><span id="search"> Agent</span></div>
     <div class="text-center"><small>YouTube Sorting and Filtering - Easy to Use and Advanced Search Engine to Optimize YouTube Results</small></div>
+    <br />
+    <!--<a href="" ng-if="!AuthService.isLoggedIn()" class="text-primary" ng-click="authorize()"><span class="glyphicon glyphicon-user"></span>Google Sign-in</a>-->
+    <!--<div ng-if="AuthService.isLoggedIn()">-->
+        <!--<span class="glyphicon glyphicon-user"></span> Using webapp as {{AuthService.getAuth().user.name}}<br />-->
+        <!--<a href="" ng-click="AuthService.logout()">Logout</a>-->
+    <!--</div>-->
 </div>
 <div ng-view></div>
     <toaster-container></toaster-container>

@@ -219,3 +219,28 @@ body{
 #sort-and-filter{
     margin-left: 0px auto;
 }
+
+#yearly-search-btn-wrapper{
+    margin: 8px 0px;
+    width: 100%;
+    background: #E0F2F1;
+    border: 1px solid rgba(0,105,92, 0.2);
+    padding: 12px;
+    border-radius: 10px;
+    color: #00695C;
+}
+
+#yearly-search-no {
+    margin-right: 5px;
+}
+
+#yearly-search-btn-wrapper #yearly-search-message{
+    font-size :12px;
+    margin-top: 5px;
+}
+
+#yearly-search-label{
+    font-size: 18px;
+    display: inline;
+    font-weight: bold;
+}
