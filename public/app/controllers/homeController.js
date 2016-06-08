@@ -56,9 +56,9 @@
             };
 
             $scope.interrupt = function(){
-              $scope.stop = true;
-                stopSearch('Search stopped', 'info');
+                $scope.wasInterrupted = true;
                 $scope.fetching = false;
+                toaster.pop('info', '', 'Search stopped');
             };
 
             var stopSearch = function(msg, toasterType){
@@ -87,7 +87,7 @@
                     resetSortOrders();
                     $scope.searchResults = [];
 
-                    $scope.stop = undefined;
+                    $scope.wasInterrupted = undefined;
                     $scope.fetching = true;
 
                     var dateLarge = new Date();
@@ -118,12 +118,14 @@
                    }
                     stopSearch('Finished search', 'info');
                 }, function(err){
+                    if(err){
+                        return;
+                    }
                     if($scope.yearlySearch && iteration < 10){
                         resetSortOrders();
                         fetchResultsWrapper(iteration);
                         return;
                     }
-                    stopSearch('Finished search', 'info');
                 });
             };
 
@@ -131,8 +133,8 @@
 
                 var deferred = promise || $q.defer();
 
-                if($scope.stop){
-                    deferred.reject(-1, true);
+                if($scope.wasInterrupted){
+                    deferred.reject(true);
                     return;
                 }
 
@@ -300,12 +302,12 @@
 
                         fetchResults(dateSmall, dateLarge, deferred);
                     }, function (err) {
-                        deferred.reject(-1, true);
+                        deferred.reject();
                         stopSearch('Service unavailable', 'error');
                     })
 
                 }, function (err) {
-                    deferred.reject(-1, true);
+                    deferred.reject();
                     stopSearch('Service unavailable', 'error');
                 });
 
