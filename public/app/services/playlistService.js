@@ -27,7 +27,7 @@
 
             var deferred = $q.defer();
             var token = gapi.auth2.getAuthInstance().currentUser.get().hg.access_token;
-            var url = 'https://www.googleapis.com/youtube/v3/playlists?part=snippet,id&mine=true&access_token=' + token;
+            var url = 'https://www.googleapis.com/youtube/v3/playlists?part=snippet,id&mine=true&maxResults=50&access_token=' + token;
             $http.get(url).then(function(res){
                 $log.info(res);
                 deferred.resolve(res.data.items);
