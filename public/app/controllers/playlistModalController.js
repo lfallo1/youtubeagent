@@ -10,14 +10,12 @@ angular.module('youtubeSearchApp')
         };
 
         $scope.addPlaylist = function(){
-            var token = gapi.auth2.getAuthInstance().currentUser.get().hg.access_token;
-            var url = 'https://www.googleapis.com/youtube/v3/playlists?part=snippet&access_token=' + token;
-            var playlistResource = PlaylistService.generatePlaylistResource($scope.newPlaylistName);
-            $http.post(url, playlistResource).then(function(res){
-                $scope.submit(res.data);
+            PlaylistService.addPlaylist($scope.newPlaylistName).then(function(newPlaylist){
+                $scope.submit(newPlaylist);
             }, function(err){
                 $log.error(err);
             });
+
         };
 
         $scope.submit = function(playlist){

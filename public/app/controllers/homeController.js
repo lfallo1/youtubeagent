@@ -5,8 +5,7 @@
 
             $scope.playlistService = PlaylistService;
 
-            var apikey = "AIzaSyAdvomXbhYg3GeBGymbPVBg-aRJeIOfFyQ";
-            //var apikey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
+            var apikey = $rootScope.apiKey;
             var sortOrders = [];
 
             function SortOption(value, direction, glyph, displayName){
