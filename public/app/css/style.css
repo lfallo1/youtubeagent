@@ -313,3 +313,13 @@ body{
     font-size: 18px;
     font-weight: bold;
 }
+
+#contact-info{
+    font-style: italic;
+    font-size: 14px;
+    text-align: center;
+}
+
+#contact-info .glyphicon{
+    font-size: 12px;
+}
