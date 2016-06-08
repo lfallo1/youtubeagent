@@ -9,6 +9,7 @@
     <meta name="author" content="Lance Fallon">
     <meta name="keywords" content="Youtube Sorting And Filtering - Search Optimization Made Easy Youtube Advanced Search Engine" />
     <meta name="description" content="Sort, Filter, and Optimize your youtube searches to return only the best results." />
+    <!--<meta name="google-signin-client_id" content="613015363976-0aodg2ib3dmv8m2g7gmknnglg29cmir9.apps.googleusercontent.com">-->
 
     <!-- bower -->
     <script type="text/javascript" src='bower/jquery/dist/jquery.js'></script>
@@ -28,7 +29,6 @@
 
     <!-- controllers -->
     <script type="text/javascript" src='static/app/controllers/homeController.js'></script>
-    <script type="text/javascript" src='static/app/controllers/authController.js'></script>
 
     <!-- services -->
     <script type="text/javascript" src='static/app/services/timeService.js'></script>
@@ -40,7 +40,7 @@
 
 
     <base href="/" />
-
+    <!--<script src="https://apis.google.com/js/platform.js" async defer></script>-->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
                     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -58,11 +58,7 @@
     <div id="title-text"><span id="you">You</span><span id="tube">Tube</span><span id="search"> Agent</span></div>
     <div class="text-center"><small>YouTube Sorting and Filtering - Easy to Use and Advanced Search Engine to Optimize YouTube Results</small></div>
     <br />
-    <!--<a href="" ng-if="!AuthService.isLoggedIn()" class="text-primary" ng-click="authorize()"><span class="glyphicon glyphicon-user"></span>Google Sign-in</a>-->
-    <!--<div ng-if="AuthService.isLoggedIn()">-->
-        <!--<span class="glyphicon glyphicon-user"></span> Using webapp as {{AuthService.getAuth().user.name}}<br />-->
-        <!--<a href="" ng-click="AuthService.logout()">Logout</a>-->
-    <!--</div>-->
+    <!--<div class="g-signin2" data-onsuccess="onSignIn"></div>-->
 </div>
 <div ng-view></div>
     <toaster-container></toaster-container>

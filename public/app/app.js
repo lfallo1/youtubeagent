@@ -22,15 +22,9 @@ angular.module('youtubeSearchApp', ['ui.router','ngRoute', 'ngAnimate', 'toaster
             });
 
         $locationProvider.html5Mode(true);
-    }]).run(['$rootScope', '$location', '$log', 'AuthService', '$uibModal', function($rootScope, $location, $log, AuthService, $uibModal){
+    }]).run(['$rootScope', '$log', 'AuthService', function($rootScope, $log, AuthService){
 
-        $rootScope.AuthService = AuthService;
-
-        $rootScope.authorize = function(){
-            if(AuthService.isLoggedIn()){
-                return;
-            }
-            location.href = "https://accounts.google.com/o/oauth2/auth?client_id=613015363976-0aodg2ib3dmv8m2g7gmknnglg29cmir9.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauthcallback&scope=https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtubepartner&response_type=token";
-        };
+        //$rootScope.AuthService = AuthService;
+        //window.onSignIn = AuthService.onSignIn;
 
     }]);

@@ -1,6 +1,6 @@
 (function(){
 
-    angular.module('youtubeSearchApp').service('AuthService', [ '$window', function($window){
+    angular.module('youtubeSearchApp').service('AuthService', [ '$window', '$log', function($window, $log){
 
         /**
          * {
@@ -11,7 +11,7 @@
   "access_token : 'tokenvaluegoeshere'
 }
          */
-        var Auth = {};
+        var Auth;
 
         var service = {};
 
@@ -24,15 +24,15 @@
         };
 
         service.isLoggedIn = function(){
-          return Auth.user;
+          return !!Auth;
         };
 
         service.logout = function(){
-            Auth = {};
+            Auth = undefined;
         };
 
-        service.authorize = function(){
-            location.href = 'https://accounts.google.com/o/oauth2/auth?client_id=613015363976-0aodg2ib3dmv8m2g7gmknnglg29cmir9.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauthcallback&scope=https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtubepartner&response_type=token';
+        service.onSignIn = function(user){
+            service.setAuth(user);
         };
 
 

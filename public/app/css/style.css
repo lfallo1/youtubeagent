@@ -244,3 +244,9 @@ body{
     display: inline;
     font-weight: bold;
 }
+
+.play-video-button, .hide-video-button{
+    width: 100%;
+    font-weight: bold;
+    font-size: 22px;
+}

@@ -8,12 +8,15 @@
 
         service.loadPlaylists = function(){
             var auth = AuthService.getAuth();
-            var url = 'https://www.googleapis.com/youtube/v3/playlists?part=snippet,id&mine=true&access_token=' + auth.access_token;
+            var url = 'https://www.googleapis.com/youtube/v3/playlists?part=snippet,id&mine=true&access_token=' + auth.hg.access_token;
             $http.get(url).then(function(res){
                 playlists = res.data.items;
                 $log.info(res);
             }, function(err){
                 $log.error(err);
+                if(err.status === 401 || err.status === 403){
+                    location.href = "https://accounts.google.com/o/oauth2/auth?client_id=613015363976-0aodg2ib3dmv8m2g7gmknnglg29cmir9.apps.googleusercontent.com&redirect_uri=http://localhost:3000/&scope=https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtubepartner&response_type=token";
+                }
             });
         };
 
@@ -61,7 +64,7 @@
             var selectedPlaylist = $scope.playlists[0];
 
             var auth = AuthService.getAuth();
-            var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&access_token=' + auth.access_token;
+            var url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&access_token=' + auth.hg.access_token;
             var playlistItemResource = generatePlaylistItemResource(video, selectedPlaylist);
             $http.post(url, playlistItemResource).then(function(res){
                 $log.info(res);

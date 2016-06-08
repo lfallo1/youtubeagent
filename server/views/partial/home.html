@@ -80,11 +80,16 @@
             <tbody>
             <tr ng-repeat="video in filteredResults">
                 <td>
-                    <div class="video-image-container">
+                    <div ng-if="!video.playing" class="video-image-container">
                         <a ng-href="{{'https://www.youtube.com/watch?v=' + video.videoId}}" target="_blank">
                             <img src="{{video.thumbnail.url}}" width="250px" class="thumbnail" />
                         </a>
                     </div>
+                    <div ng-if="video.playing" class="player">
+                        <iframe width="560" height="315" src="{{getIFrameSrc(video.videoId)}}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div ng-if="!video.playing" class="play-video-button btn btn-default" ng-click="setPlaying(video, true)"><span class="glyphicon glyphicon-play"></span></div>
+                    <div ng-if="video.playing" class="hide-video-button btn btn-default" ng-click="setPlaying(video, false)"><span class="glyphicon glyphicon-stop"></span></div>
                 </td>
                 <td>
                     <div class="video-details-container">
@@ -97,6 +102,7 @@
                         <div class="view-count"><small>Views</small> {{video.viewCount}}</div>
                         <div class="likes"><small>Likes</small> {{video.likes}}</div>
                         <div class="dislikes"><small>Dislikes</small> {{video.dislikes}}</div>
+
                         <!--<div id="youtube-members-only" ng-if="AuthService.isLoggedIn()">-->
                             <!--<hr />-->
                             <!--<button type="button" ng-click="addToPlaylist(video)">+ Add to playlist</button>-->

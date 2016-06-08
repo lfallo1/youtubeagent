@@ -1,7 +1,7 @@
 (function(){
     angular.module('youtubeSearchApp').controller('HomeCtrl', [
-        '$rootScope', '$scope', '$http', '$q', '$log', '$timeout', 'TimeService', 'toaster', '$window', '$uibModal', 'AuthService', 'PlaylistService',
-        function($rootScope, $scope, $http, $q, $log, $timeout, TimeService, toaster, $window, $modal, AuthService, PlaylistService){
+        '$rootScope', '$scope', '$http', '$q', '$log', '$timeout', '$location', 'TimeService', 'toaster', '$window', '$uibModal', 'AuthService', 'PlaylistService', '$sce',
+        function($rootScope, $scope, $http, $q, $log, $timeout, $location, TimeService, toaster, $window, $modal, AuthService, PlaylistService, $sce){
 
             var apikey = "AIzaSyAdvomXbhYg3GeBGymbPVBg-aRJeIOfFyQ";
             //var apikey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
@@ -38,6 +38,14 @@
                     new SortOption('pctLikes', -1, 'star', 'Rating')
                 ];
                 $scope.sortField = $scope.sortOptions[0].value;
+            };
+
+            $scope.setPlaying = function(video, val){
+              video.playing = val;
+            };
+
+            $scope.getIFrameSrc = function (videoId) {
+                return $sce.trustAsResourceUrl('https://www.youtube.com/embed/' + videoId);
             };
 
             $scope.sortOptionChanged = function(option){
