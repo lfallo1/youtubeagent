@@ -17,7 +17,7 @@
                 $log.error(err);
                 if(err.status === 401 || err.status === 403){
                     //location.href = "https://accounts.google.com/o/oauth2/auth?client_id=613015363976-0aodg2ib3dmv8m2g7gmknnglg29cmir9.apps.googleusercontent.com&redirect_uri=http://localhost:3000/oauthcallback&scope=https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtubepartner&response_type=token";
-                    location.href = "https://accounts.google.com/o/oauth2/auth?client_id=613015363976-0aodg2ib3dmv8m2g7gmknnglg29cmir9.apps.googleusercontent.com&redirect_uri=http://www.youtubeagent.io/oauthcallback&scope=https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtubepartner&response_type=token";
+                    location.href = "https://accounts.google.com/o/oauth2/auth?client_id=613015363976-vt1eeel6upnq26k2haupepbdtpd2bjgj.apps.googleusercontent.com&redirect_uri=http://www.youtubeagent.io/oauthcallback&scope=https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtubepartner&response_type=token";
                 }
                 else if(err.status === 404){
                     toaster.pop('info', '', 'Looks like you haven\'t setup a YouTube channel yet.  Once you get one setup, give this another try');
