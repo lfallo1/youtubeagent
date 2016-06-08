@@ -1,3 +1,6 @@
+/**
+ * TimeService.js - handle converting of iso 8601 time
+ */
 (function() {
     angular.module('youtubeSearchApp').service('TimeService', ['$log', function timeService($log) {
 

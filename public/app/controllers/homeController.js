@@ -1,13 +1,29 @@
+/**
+ * HomeCtrl.js - Primvary controller. Handles the loading of videos, sorting and filtering.
+ */
 (function(){
     angular.module('youtubeSearchApp').controller('HomeCtrl', [
         '$rootScope', '$scope', '$http', '$q', '$log', '$timeout', '$location', 'TimeService', 'toaster', '$window', '$uibModal', 'AuthService', 'PlaylistService', '$sce',
         function($rootScope, $scope, $http, $q, $log, $timeout, $location, TimeService, toaster, $window, $modal, AuthService, PlaylistService, $sce){
 
+            /**
+             * set playlistService scope variable so the view can access service methods directly instead of creating redundant
+             * intermediary methods
+             * @type {PlaylistService|*}
+             */
             $scope.playlistService = PlaylistService;
 
             var apikey = $rootScope.apiKey;
             var sortOrders = [];
 
+            /**
+             * SortOption object
+             * @param value
+             * @param direction
+             * @param glyph
+             * @param displayName
+             * @constructor
+             */
             function SortOption(value, direction, glyph, displayName){
                 this.value = value;
                 this.direction = direction;
@@ -15,23 +31,18 @@
                 this.displayName = displayName;
             };
 
+            /**
+             * setup view
+             */
             var init = function(){
 
                 $scope.yearlySearch = false;
-
-                //********* removing this eventually ************
-                //if(!AuthService.isLoggedIn()){
-                //    AuthService.authorize();
-                //}
-                //***********************************************
-
-                if(AuthService.isLoggedIn()){
-                    loadPlaylists();
-                }
                 $scope.totalResults = 0;
                 $scope.searchParam = '';
                 $scope.searchResults = $scope.filteredResults = [];
 
+                //setup sort options (each sort option will be used for a search). different sort options
+                //are used to increate search results
                 $scope.sortOptions = [
                     new SortOption('viewCount', -1, 'user', 'Views'),
                     new SortOption('likes', -1, 'thumbs-up', 'Likes'),
@@ -54,17 +65,28 @@
                 $scope.sort();
             };
 
+            /**
+             * Interrupt a search
+             */
             $scope.interrupt = function(){
                 $scope.wasInterrupted = true;
                 $scope.fetching = false;
                 toaster.pop('info', '', 'Search stopped');
             };
 
+            /**
+             * Handle a finished search
+             * @param msg
+             * @param toasterType
+             */
             var stopSearch = function(msg, toasterType){
                 $scope.fetching = false;
                 toaster.pop(toasterType, '', msg);
             };
 
+            /**
+             * reset sort order objects (main purpose of this is to reset the tokens)
+             */
             var resetSortOrders = function(){
                 sortOrders = [
                     {order : 'relevance', token : ''},
@@ -75,11 +97,17 @@
                 ];
             };
 
+            /**
+             * perform a new search
+             */
             $scope.doSearch = function(){
+
+                //if already searching, just return immediately
                 if($scope.fetching){
                     return;
                 }
 
+                //if a search term exists
                 $scope.searchParam = $scope.searchParam.trim();
                 if($scope.searchParam){
 
@@ -89,37 +117,60 @@
                     $scope.wasInterrupted = undefined;
                     $scope.fetching = true;
 
-                    var dateLarge = new Date();
-                    var dateSmall = new Date(dateLarge.getFullYear()-1, dateLarge.getMonth(), dateLarge.getDate());
+                    //call the wrapper
                     fetchResultsWrapper(0);
                 }
             };
 
+            /**
+             * method that accepts an iteration number, and whether or not to cancel the search.
+             * The method calls fetch results, then waits for all requests to finish.
+             * If the yearlySearch is on, it will perform 5 additional searches between date spans to help improve results
+             * @param iteration
+             * @param cancel
+             */
             var fetchResultsWrapper = function(iteration, cancel){
+
+                //if cancel passed in (used if errors occur, and we want to the search to end
                 if(cancel){
                     return;
                 }
+
+                //create date object query params if not the first pass
                 var date = new Date();
                 var dateLarge = '';
                 var dateSmall = '';
                 if(iteration !== 0){
+                    //define the date range
                     var large = new Date(date.getFullYear()-iteration*2, date.getMonth(), date.getDate());
                     var small = new Date(date.getFullYear()-iteration - 2, date.getMonth(), date.getDate());
                     dateSmall = "&publishedAfter=" + small.toISOString();
                     dateLarge = "&publishedBefore=" + large.toISOString();
                 }
+
+                //increment iteration by two
                 iteration += 2;
+
+                //fetch results, passing the date range (the date ranges can be empty)
                 fetchResults(dateSmall, dateLarge).then(function(){
+
+                    //check if yearlySearch and iteration is not 10 or greater
                    if($scope.yearlySearch && iteration < 10){
+
+                       //if we are searching again, reset the sort order objects & their tokens, then call fetchResultsWrapper
                        resetSortOrders();
                        fetchResultsWrapper(iteration);
                        return;
                    }
                     stopSearch('Finished search', 'info');
                 }, function(err){
+
+                    //if explicitly returning an error, then return
                     if(err){
                         return;
                     }
+
+                    //otherwise, we want to try and continue
                     if($scope.yearlySearch && iteration < 10){
                         resetSortOrders();
                         fetchResultsWrapper(iteration);
@@ -128,6 +179,13 @@
                 });
             };
 
+            /**
+             * fetches the actual results
+             * @param dateSmall (can be an empty string)
+             * @param dateLarge (can be an empty string)
+             * @param promise (optional)
+             * @returns {*}
+             */
             var fetchResults = function(dateSmall, dateLarge, promise){
 
                 var deferred = promise || $q.defer();
@@ -201,12 +259,6 @@
                             }
                         }
                     }
-
-                    //if all the resulst were duplicates of already existing items in searchResults array, then finish
-                    //if (nonDuplicates.length === 0) {
-                    //    deferred.resolve();
-                    //    return;
-                    //}
 
                     //query the statistics for each video
                     var promises = [];
@@ -289,15 +341,6 @@
                         }
 
                         $scope.sort();
-
-                        //if (sortOrders.filter(function (d) {
-                        //        if (d.token) {
-                        //            return d;
-                        //        }
-                        //    }).length === 0) {
-                        //    deferred.resolve();
-                        //    return;
-                        //}
 
                         fetchResults(dateSmall, dateLarge, deferred);
                     }, function (err) {

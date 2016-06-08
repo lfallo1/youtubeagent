@@ -34,7 +34,10 @@ angular.module('youtubeSearchApp', ['ui.router','ngRoute', 'ngAnimate', 'toaster
         //$rootScope.authCallbackUrl = "http://localhost:3000/oauthcallback";
         //$rootScope.apiKey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
 
+        //set AuthService on rootScope for convenience (still placing AuthService in its service for modularity)
         $rootScope.AuthService = AuthService;
+
+        //set the onSignIn event on the window object
         window.onSignIn = AuthService.onSignIn;
 
     }]);
