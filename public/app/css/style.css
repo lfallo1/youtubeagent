@@ -250,3 +250,66 @@ body{
     font-weight: bold;
     font-size: 22px;
 }
+
+
+.add-playlist-button, .add-playlist-button:active{
+    margin-top: 14px;
+    background: #01579B;
+    border-color: #01579B;
+}
+
+.add-playlist-button:hover{
+    background: #01579B !important;
+    border-color: #01579B !important;
+    opacity: 0.8;
+}
+
+.google-button {
+    position: absolute;
+    top: 15px;
+    right: 50px;
+}
+
+.playlist-item{
+    text-align: center;
+    background: #2196F3  ;
+    padding: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 2px;
+    color: white;
+    border-radius: 5px;
+}
+
+.playlist-item:hover{
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+#add-new-playlist{
+    width: 100%;
+    margin-top: 4px;
+    padding: 10px 0px 10px 0px;
+    font-weight: bolder;
+    font-size: 18px;
+}
+
+#new-playlist-wrapper{
+    margin-top: 5px;
+}
+
+#new-playlist-input{
+    padding: 4px 6px;
+    border-radius: 5px;
+    margin-top: 3px;
+    font-size: 20px;
+    font-weight: bold;
+    width: 100%;
+}
+
+#new-playlist-save{
+    margin-top: 2px;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+}

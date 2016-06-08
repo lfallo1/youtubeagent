@@ -1,0 +1,13 @@
+<div id="playlist-modal-body" class="modal-body">
+    <div class="playlist-item" ng-repeat="playlist in playlists" ng-click="submit(playlist)">
+        {{playlist.snippet.title}}
+    </div>
+    <div ng-show="!addingPlaylist" id="add-new-playlist" class="btn btn-default" ng-click="setAddingPlaylist(true)">+ Create Playlist</div>
+    <div ng-show="addingPlaylist" id="new-playlist-wrapper">
+        <input id="new-playlist-input" type="text" maxlength="50" ng-model="newPlaylistName" placeholder="Enter playlist name..." />
+        <button id="new-playlist-save" class="btn btn-success" ng-click="addPlaylist()">Save</button>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn-link" ng-click="cancel()">Cancel</button>
+</div>

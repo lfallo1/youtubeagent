@@ -3,6 +3,8 @@
         '$rootScope', '$scope', '$http', '$q', '$log', '$timeout', '$location', 'TimeService', 'toaster', '$window', '$uibModal', 'AuthService', 'PlaylistService', '$sce',
         function($rootScope, $scope, $http, $q, $log, $timeout, $location, TimeService, toaster, $window, $modal, AuthService, PlaylistService, $sce){
 
+            $scope.playlistService = PlaylistService;
+
             var apikey = "AIzaSyAdvomXbhYg3GeBGymbPVBg-aRJeIOfFyQ";
             //var apikey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
             var sortOrders = [];

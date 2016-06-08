@@ -14,8 +14,8 @@ angular.module('youtubeSearchApp', ['ui.router','ngRoute', 'ngAnimate', 'toaster
                 controller: 'HomeCtrl'
             }).
             when('/oauthcallback', {
-               templateUrl : 'partials/auth',
-                controller : 'AuthCtrl'
+               templateUrl : 'partials/authHandler',
+                controller : 'AuthHandlerCtrl'
             }).
             otherwise({
                 redirectTo: '/'
@@ -24,7 +24,7 @@ angular.module('youtubeSearchApp', ['ui.router','ngRoute', 'ngAnimate', 'toaster
         $locationProvider.html5Mode(true);
     }]).run(['$rootScope', '$log', 'AuthService', function($rootScope, $log, AuthService){
 
-        //$rootScope.AuthService = AuthService;
-        //window.onSignIn = AuthService.onSignIn;
+        $rootScope.AuthService = AuthService;
+        window.onSignIn = AuthService.onSignIn;
 
     }]);

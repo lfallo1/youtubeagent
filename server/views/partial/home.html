@@ -102,6 +102,7 @@
                         <div class="view-count"><small>Views</small> {{video.viewCount}}</div>
                         <div class="likes"><small>Likes</small> {{video.likes}}</div>
                         <div class="dislikes"><small>Dislikes</small> {{video.dislikes}}</div>
+                        <div ng-if="AuthService.isLoggedIn()" class="add-playlist-button btn btn-success" ng-click="playlistService.addToPlaylist(video)"><span class="glyphicon glyphicon-plus"></span> Add to Playlist</div>
 
                         <!--<div id="youtube-members-only" ng-if="AuthService.isLoggedIn()">-->
                             <!--<hr />-->
