@@ -17,6 +17,7 @@
             var sortOrders = [];
             $scope.TEXT_SEARCH = 1;
             $scope.POPULAR_SEARCH = 2;
+            var ALL_CATEGORIES = {'id' : '-1', 'snippet' : {'title' : 'Search All Categories'}};
 
             /**
              * SortOption object
@@ -327,7 +328,7 @@
                             return d;
                         }
                     });
-                    $scope.videoCategories.push({'id' : '-1', 'snippet' : {'title' : 'Search All Categories'}});
+                    $scope.videoCategories.push(ALL_CATEGORIES);
                     $scope.selectedCategory = $scope.videoCategories[0];
                 });
             };
