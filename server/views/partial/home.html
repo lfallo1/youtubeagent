@@ -1,14 +1,42 @@
 <!--<button class="btn btn-default" ng-click="searchPopular('ES')">Search popular</button>-->
 <div id="input-container" class="row">
 
+    <div id="search-mode-btn-wrapper" class="btn-group col-md-12">
+        <div id="search-mode-labels-wrapper">
+            <label id="search-mode-button" class="btn btn-default" ng-model="searchMode" uib-btn-radio="TEXT_SEARCH" uncheckable>Search by Text</label>
+            <label id="popular-search-mode-button" class="btn btn-default" ng-model="searchMode" uib-btn-radio="POPULAR_SEARCH" uncheckable><span class="glyphicon glyphicon-star"></span>Search Popular</label>
+        </div>
+    </div>
+
     <div id="textbox-container" class="form-group col-md-8 col-md-offset-2">
-        <form ng-submit="doSearch()">
+        <form ng-show="searchMode === TEXT_SEARCH" ng-submit="doSearch()">
             <div class="input-group">
                 <input class="form-control" type="text" ng-model="searchParam" placeholder="search term here..." autofocus />
                 <div id="searchButton" ng-if="!fetching" class="notta-button input-group-addon" ng-click="doSearch()"><span class="glyphicon glyphicon-search"></span>Search</div>
                 <div id="stopButton" ng-if="fetching" class="notta-button input-group-addon" ng-click="interrupt()"><span class="glyphicon glyphicon-stop"></span>Stop</div>
             </div>
         </form>
+        <div ng-show="searchMode === POPULAR_SEARCH" id="search-popular-wrapper" class="row">
+            <div id="countries-dropdown-wrapper" class="col-md-6">
+                <select id="countries-list" name="countries" class="form-control"
+                        ng-model="selectedCountry"
+                        ng-options="country.name for country in countries"
+                        ng-change="updateCategories()"
+                        placeholder="Select a country">
+                    <option value="">Select a country</option>
+                </select>
+            </div>
+            <div id="categories-dropdown-wrapper" class="col-md-6">
+                <select id="categories-list" name="categories" class="form-control"
+                        ng-model="selectedCategory"
+                        ng-options="category as category.snippet.title for category in videoCategories">
+                </select>
+            </div>
+            <div id="search-popular-button-wrapper" class="col-md-12">
+                <div ng-if="!fetching" class="btn btn-default btn-lg" ng-click="searchPopular()"><span class="glyphicon glyphicon-search"></span>Perform search</div>
+                <div ng-if="fetching" class="btn btn-danger btn-lg" ng-click="interrupt()"><span class="glyphicon glyphicon-stop"></span>Stop</div>
+            </div>
+        </div>
         <!--<div id="yearly-search-btn-wrapper" class="btn-group">-->
             <!--<label id="yearly-search-yes" class="btn btn-success" ng-model="yearlySearch" uib-btn-radio="true" uncheckable>On</label>-->
             <!--<label id="yearly-search-no" class="btn btn-success" ng-model="yearlySearch" uib-btn-radio="false" uncheckable>Off</label>-->

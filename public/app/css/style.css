@@ -64,8 +64,8 @@ body{
 
 #searchButton{
     color: white;
-    background: #01579B;
-    border-color: #01579B;
+    background: #4CAF50;
+    border-color: #4CAF50;
     font-size: 22px;
 }
 
@@ -322,4 +322,34 @@ body{
 
 #contact-info .glyphicon{
     font-size: 12px;
+}
+
+#search-mode-btn-wrapper{
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#search-mode-btn-wrapper .btn{
+    padding: 10px 25px;
+    font-size: 24px;
+    margin-right: -4px;
+    color: #01579B !important;
+}
+
+#search-popular-wrapper select{
+    font-size: 22px;
+}
+
+#search-popular-wrapper #search-popular-button-wrapper{
+    margin-top: 5px;
+}
+
+#search-popular-wrapper #search-popular-button-wrapper .btn{
+    width: 100%;
+    color: white;
+    font-size: 26px;
+}
+
+#search-popular-wrapper #search-popular-button-wrapper .btn-default{
+    background: #4CAF50 ;
 }

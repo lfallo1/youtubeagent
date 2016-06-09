@@ -15,6 +15,8 @@
 
             var apikey = $rootScope.apiKey;
             var sortOrders = [];
+            $scope.TEXT_SEARCH = 1;
+            $scope.POPULAR_SEARCH = 2;
 
             /**
              * SortOption object
@@ -35,12 +37,17 @@
              * setup view
              */
             var init = function(){
-
                 CountriesService.getCountries().then(function(countries){
-                    $scope.countries
+                    $scope.countries = countries;
+                    $scope.selectedCountry = $scope.countries.filter(function(d){
+                        if(d['alpha-2'] === 'US'){
+                            return d;
+                        }
+                    })[0];
+                    $scope.updateCategories();
                 });
 
-                $scope.yearlySearch = false;
+                $scope.searchMode = $scope.TEXT_SEARCH;
                 $scope.totalResults = 0;
                 $scope.searchParam = '';
                 $scope.searchResults = $scope.filteredResults = [];
@@ -312,22 +319,28 @@
                 return deferred.promise;
             };
 
-            $scope.searchPopular = function(countryAlphaCode, category){
+            $scope.updateCategories = function(){
+                var url = 'https://www.googleapis.com/youtube/v3/videoCategories?part=snippet&regionCode='+ $scope.selectedCountry['alpha-2'] +'&key=' + apikey;
+                $http.get(url).then(function(res){
+                    $scope.videoCategories = res.data.items.filter(function(d){
+                        if(d.snippet.assignable){
+                            return d;
+                        }
+                    });
+                    $scope.videoCategories.push({'id' : '-1', 'snippet' : {'title' : 'Search All Categories'}});
+                    $scope.selectedCategory = $scope.videoCategories[0];
+                });
+            };
+
+            $scope.searchPopular = function(){
                 $scope.searchResults = [];
                 $scope.wasInterrupted = undefined;
                 $scope.fetching = true;
-                if(category){
-                    $scope.fetchPopularByCategory(countryAlphaCode, category);
+                if($scope.selectedCategory && $scope.selectedCategory.id && $scope.selectedCategory.id > 0){
+                    $scope.fetchPopularByCountryAndCategory($scope.selectedCountry['alpha-2'], $scope.selectedCategory.id);
                 }
                 else{
-                    $http.get('https://www.googleapis.com/youtube/v3/videoCategories?part=snippet&regionCode='+ countryAlphaCode +'&key=' + apikey).then(function(res){
-                        $scope.videoCategories = res.data.items.filter(function(d){
-                            if(d.snippet.assignable){
-                                return d;
-                            }
-                        });
-                        $scope.fetchPopularByCountryAll(countryAlphaCode);
-                    });
+                    $scope.fetchPopularByCountryAll($scope.selectedCountry['alpha-2']);
                 }
             };
 
@@ -337,11 +350,16 @@
              * @param token
              */
             $scope.fetchPopularByCountryAll = function(countryAlphaCode, token){
+
+                if($scope.wasInterrupted){
+                    return;
+                }
+
                 token = token ? '&pageToken=' + token : '';
 
                 var promises = [];
                 promises.push($http.get('https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&maxResults=50&chart=mostPopular&regionCode=' + countryAlphaCode + token + '&key=' + apikey));
-                for(var i = 0; i < $scope.videoCategories.length; i++){
+                for(var i = 0; i < $scope.videoCategories.length - 1; i++){
                     var url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&maxResults=50&chart=mostPopular&regionCode=' + countryAlphaCode + '&videoCategoryId=' + $scope.videoCategories[i].id + token + '&key=' + apikey;
                     promises.push($http.get(url));
                 }
@@ -449,9 +467,9 @@
                 }
 
                 token = token ? '&pageToken=' + token : '';
-                category = category ? '&videoCategory=' + category : '';
+                category = category || '';
 
-                var url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&maxResults=50&chart=mostPopular&regionCode=' + countryAlphaCode + token + category + '&key=' + apikey;
+                var url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&maxResults=50&chart=mostPopular&regionCode=' + countryAlphaCode + '&videoCategoryId=' + category + token + '&key=' + apikey;
                 $http.get(url).then(function(res){
                     var nextPageToken = res.data.nextPageToken;
 
