@@ -312,38 +312,37 @@
                 return deferred.promise;
             };
 
-            $scope.searchPopular = function(category, country){
+            $scope.searchPopular = function(countryAlphaCode, category){
                 $scope.searchResults = [];
                 $scope.wasInterrupted = undefined;
                 $scope.fetching = true;
                 if(category){
-                    $scope.fetchPopularByCategory(country, category);
+                    $scope.fetchPopularByCategory(countryAlphaCode, category);
                 }
                 else{
-                    $http.get('https://www.googleapis.com/youtube/v3/videoCategories?part=snippet&regionCode=US&key=' + apikey).then(function(res){
+                    $http.get('https://www.googleapis.com/youtube/v3/videoCategories?part=snippet&regionCode='+ countryAlphaCode +'&key=' + apikey).then(function(res){
                         $scope.videoCategories = res.data.items.filter(function(d){
                             if(d.snippet.assignable){
                                 return d;
                             }
                         });
-                        $scope.fetchPopularAll('US');
+                        $scope.fetchPopularByCountryAll(countryAlphaCode);
                     });
                 }
             };
 
             /**
              * get popular by country (loop through each assignable category))
-             * @param alpha
+             * @param countryAlphaCode
              * @param token
              */
-            $scope.fetchPopularAll = function(alpha, token){
-                alpha = alpha || 'US';
+            $scope.fetchPopularByCountryAll = function(countryAlphaCode, token){
                 token = token ? '&pageToken=' + token : '';
 
                 var promises = [];
-                promises.push($http.get('https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&maxResults=50&chart=mostPopular&regionCode=' + alpha + token + '&key=' + apikey));
+                promises.push($http.get('https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&maxResults=50&chart=mostPopular&regionCode=' + countryAlphaCode + token + '&key=' + apikey));
                 for(var i = 0; i < $scope.videoCategories.length; i++){
-                    var url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&maxResults=50&chart=mostPopular&regionCode=' + alpha + '&videoCategoryId=' + $scope.videoCategories[i].id + token + '&key=' + apikey;
+                    var url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&maxResults=50&chart=mostPopular&regionCode=' + countryAlphaCode + '&videoCategoryId=' + $scope.videoCategories[i].id + token + '&key=' + apikey;
                     promises.push($http.get(url));
                 }
 
@@ -430,7 +429,7 @@
 
                         $scope.sort();
 
-                        $scope.fetchPopularAll('US', nextPageToken);
+                        $scope.fetchPopularByCountryAll(countryAlphaCode, nextPageToken);
                     }, function (err) {
                         stopSearch('Service unavailable', 'error');
                     });
@@ -439,11 +438,11 @@
 
             /**
              * get most popular by category (and country - required for now)
-             * @param alpha
+             * @param countryAlphaCode
              * @param category
              * @param token
              */
-            $scope.fetchPopularByCategory = function(alpha, category, token){
+            $scope.fetchPopularByCountryAndCategory = function(countryAlphaCode, category, token){
 
                 if($scope.wasInterrupted){
                     return;
@@ -451,9 +450,8 @@
 
                 token = token ? '&pageToken=' + token : '';
                 category = category ? '&videoCategory=' + category : '';
-                alpha = alpha || 'US';
 
-                var url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&maxResults=50&chart=mostPopular&regionCode=' + alpha + token + category + '&key=' + apikey;
+                var url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&maxResults=50&chart=mostPopular&regionCode=' + countryAlphaCode + token + category + '&key=' + apikey;
                 $http.get(url).then(function(res){
                     var nextPageToken = res.data.nextPageToken;
 
@@ -514,7 +512,7 @@
 
                             $scope.sort();
 
-                            $scope.fetchPopularByCategory(alpha, category, nextPageToken);
+                            $scope.fetchPopularByCountryAndCategory(countryAlphaCode, category, nextPageToken);
                         }, function (err) {
                             stopSearch('Service unavailable', 'error');
                         });
