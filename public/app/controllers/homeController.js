@@ -3,8 +3,8 @@
  */
 (function(){
     angular.module('youtubeSearchApp').controller('HomeCtrl', [
-        '$rootScope', '$scope', '$http', '$q', '$log', '$timeout', '$location', 'TimeService', 'toaster', '$window', '$uibModal', 'AuthService', 'PlaylistService', '$sce',
-        function($rootScope, $scope, $http, $q, $log, $timeout, $location, TimeService, toaster, $window, $modal, AuthService, PlaylistService, $sce){
+        '$rootScope', '$scope', '$http', '$q', '$log', '$timeout', '$location', 'TimeService', 'toaster', '$window', '$uibModal', 'AuthService', 'PlaylistService', '$sce', 'CountriesService',
+        function($rootScope, $scope, $http, $q, $log, $timeout, $location, TimeService, toaster, $window, $modal, AuthService, PlaylistService, $sce, CountriesService){
 
             /**
              * set playlistService scope variable so the view can access service methods directly instead of creating redundant
@@ -35,6 +35,10 @@
              * setup view
              */
             var init = function(){
+
+                CountriesService.getCountries().then(function(countries){
+                    $scope.countries
+                });
 
                 $scope.yearlySearch = false;
                 $scope.totalResults = 0;
@@ -290,55 +294,7 @@
                             data = data.concat(res[i].data.items);
                         }
 
-                        //for each video, add to the list
-                        for (var i = 0; i < data.length; i++) {
-                            var datastats = data[i];
-                            if (datastats) {
-                                var title = datastats.snippet.title;
-                                var channelTitle = datastats.snippet.channelTitle;
-                                var channelId = datastats.snippet.channelId;
-                                var created = new Date(datastats.snippet.publishedAt);
-                                var id = datastats.id;
-
-                                //format the pct likes
-                                var pctLikes;
-                                if (datastats.statistics.likeCount) {
-                                    pctLikes = (Number(datastats.statistics.likeCount) / (Number(datastats.statistics.likeCount) + Number(datastats.statistics.dislikeCount))) * 100
-                                }
-                                else if (datastats.statistics.dislikeCount) {
-                                    pctLikes = 0;
-                                }
-                                else {
-                                    pctLikes = undefined;
-                                }
-
-                                var viewCount = datastats.statistics.viewCount;
-                                var likes = datastats.statistics.likeCount;
-                                var dislikes = datastats.statistics.dislikeCount;
-
-                                //extract duration from ISO 8601 (PT#H#M#S)
-                                var duration = {};
-                                if (datastats.contentDetails) {
-                                    duration = TimeService.isoToDuration(datastats.contentDetails.duration);
-                                }
-
-                                //add object to search results
-                                $scope.searchResults.push({
-                                    "title": title,
-                                    "channelTitle": channelTitle,
-                                    "channelId": channelId,
-                                    "created": created,
-                                    "videoId": id,
-                                    "pctLikes": pctLikes || 0,
-                                    "viewCount": Number(viewCount),
-                                    "likes": Number(likes) || 0,
-                                    "dislikes": Number(dislikes) || 0,
-                                    "thumbnail": datastats.snippet.thumbnails.medium,
-                                    "duration": duration.formatted || null,
-                                    "durationMinutes": duration.approxMinutes || null
-                                });
-                            }
-                        }
+                        addVideosToList(data);
 
                         $scope.sort();
 
@@ -354,6 +310,271 @@
                 });
 
                 return deferred.promise;
+            };
+
+            $scope.searchPopular = function(category, country){
+                $scope.searchResults = [];
+                $scope.wasInterrupted = undefined;
+                $scope.fetching = true;
+                if(category){
+                    $scope.fetchPopularByCategory(country, category);
+                }
+                else{
+                    $http.get('https://www.googleapis.com/youtube/v3/videoCategories?part=snippet&regionCode=US&key=' + apikey).then(function(res){
+                        $scope.videoCategories = res.data.items.filter(function(d){
+                            if(d.snippet.assignable){
+                                return d;
+                            }
+                        });
+                        $scope.fetchPopularAll('US');
+                    });
+                }
+            };
+
+            /**
+             * get popular by country (loop through each assignable category))
+             * @param alpha
+             * @param token
+             */
+            $scope.fetchPopularAll = function(alpha, token){
+                alpha = alpha || 'US';
+                token = token ? '&pageToken=' + token : '';
+
+                var promises = [];
+                promises.push($http.get('https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&maxResults=50&chart=mostPopular&regionCode=' + alpha + token + '&key=' + apikey));
+                for(var i = 0; i < $scope.videoCategories.length; i++){
+                    var url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&maxResults=50&chart=mostPopular&regionCode=' + alpha + '&videoCategoryId=' + $scope.videoCategories[i].id + token + '&key=' + apikey;
+                    promises.push($http.get(url));
+                }
+
+                //wait for all requests to complete
+                $q.all(promises).then(function (res) {
+
+                    //no results, then finish
+                    if (!res || res.length === 0) {
+                        stopSearch('Finished', 'info');
+                        return;
+                    }
+
+                    //no items in any results, then finish
+                    var sum = 0;
+                    res.forEach(function (d) {
+                        if (d.data && d.data.items) {
+                            sum += d.data.items.length;
+                        }
+                    });
+                    if (sum === 0) {
+                        stopSearch('Finished', 'info');
+                        return;
+                    }
+
+                    //set next page tokens
+                    var nextPageToken = res[0].data.nextPageToken;
+
+                    //otherwise there are items
+                    var nonDuplicates = [];
+                    for (var i = 0; i < res.length; i++) {
+
+                        //get all items from response
+                        var items = res[i].data.items;
+
+                        //loop through all items in response
+                        for (var j = 0; j < items.length; j++) {
+
+                            //check if already exists in main array or temp nonDuplicates array
+                            if ($scope.searchResults.filter(function (d) {
+                                    if (d.videoId == items[j].id) {
+                                        return d;
+                                    }
+                                }).length === 0 && nonDuplicates.filter(function (d) {
+                                    if (d.id === items[j].id) {
+                                        return d;
+                                    }
+                                }).length === 0) {
+                                nonDuplicates.push(items[j]);
+                            }
+                        }
+                    }
+
+                    //query the statistics for each video
+                    var promises = [];
+                    for (var i = 0; i < nonDuplicates.length; i++) {
+
+                        //create list of video id's (max list size of 50).
+                        var count = 0;
+                        var idList = [];
+                        while (count < 50 && i < nonDuplicates.length) {
+                            idList.push(nonDuplicates[i].id);
+                            i++;
+                            count++;
+                        }
+
+                        //create a promise with list of video id's for the batch request
+                        promises.push($http.get('https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=' + idList.toString() + '&key=' + apikey));
+                    }
+
+                    if(promises.length === 0){
+                        stopSearch('Finished search', 'info');
+                        return;
+                    }
+
+                    //wait for reequest to finish
+                    $q.all(promises).then(function (res) {
+
+                        var data = [];
+                        for (var i = 0; i < res.length; i++) {
+                            data = data.concat(res[i].data.items);
+                        }
+
+                        addVideosToList(data);
+
+                        $scope.sort();
+
+                        $scope.fetchPopularAll('US', nextPageToken);
+                    }, function (err) {
+                        stopSearch('Service unavailable', 'error');
+                    });
+                });
+            };
+
+            /**
+             * get most popular by category (and country - required for now)
+             * @param alpha
+             * @param category
+             * @param token
+             */
+            $scope.fetchPopularByCategory = function(alpha, category, token){
+
+                if($scope.wasInterrupted){
+                    return;
+                }
+
+                token = token ? '&pageToken=' + token : '';
+                category = category ? '&videoCategory=' + category : '';
+                alpha = alpha || 'US';
+
+                var url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&maxResults=50&chart=mostPopular&regionCode=' + alpha + token + category + '&key=' + apikey;
+                $http.get(url).then(function(res){
+                    var nextPageToken = res.data.nextPageToken;
+
+                    if(res.data.items.length > 0){
+
+                        var nonDuplicates = [];
+                        //get all items from response
+                        var items = res.data.items;
+
+                        //loop through all items in response
+                        for (var j = 0; j < items.length; j++) {
+
+                            //check if already exists in main array or temp nonDuplicates array
+                            if ($scope.searchResults.filter(function (d) {
+                                    if (d.videoId == items[j].id) {
+                                        return d;
+                                    }
+                                }).length === 0 && nonDuplicates.filter(function (d) {
+                                    if (d.id === items[j].id) {
+                                        return d;
+                                    }
+                                }).length === 0) {
+                                nonDuplicates.push(items[j]);
+                            }
+                        }
+
+                        //query the statistics for each video
+                        var promises = [];
+                        for (var i = 0; i < nonDuplicates.length; i++) {
+
+                            //create list of video id's (max list size of 50).
+                            var count = 0;
+                            var idList = [];
+                            while (count < 50 && i < nonDuplicates.length) {
+                                idList.push(nonDuplicates[i].id);
+                                i++;
+                                count++;
+                            }
+
+                            //create a promise with list of video id's for the batch request
+                            promises.push($http.get('https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=' + idList.toString() + '&key=' + apikey));
+                        }
+
+                        if(promises.length === 0){
+                            stopSearch('Finished search', 'info');
+                            return;
+                        }
+
+                        //wait for reequest to finish
+                        $q.all(promises).then(function (res) {
+
+                            var data = [];
+                            for (var i = 0; i < res.length; i++) {
+                                data = data.concat(res[i].data.items);
+                            }
+
+                            addVideosToList(data);
+
+                            $scope.sort();
+
+                            $scope.fetchPopularByCategory(alpha, category, nextPageToken);
+                        }, function (err) {
+                            stopSearch('Service unavailable', 'error');
+                        });
+                    }
+                    else{
+                        stopSearch('Finished search', 'info');
+                    }
+                });
+            };
+
+            var addVideosToList = function(data){
+                //for each video, add to the list
+                for (var i = 0; i < data.length; i++) {
+                    var datastats = data[i];
+                    if (datastats) {
+                        var title = datastats.snippet.title;
+                        var channelTitle = datastats.snippet.channelTitle;
+                        var channelId = datastats.snippet.channelId;
+                        var created = new Date(datastats.snippet.publishedAt);
+                        var id = datastats.id;
+
+                        //format the pct likes
+                        var pctLikes;
+                        if (datastats.statistics.likeCount) {
+                            pctLikes = (Number(datastats.statistics.likeCount) / (Number(datastats.statistics.likeCount) + Number(datastats.statistics.dislikeCount))) * 100
+                        }
+                        else if (datastats.statistics.dislikeCount) {
+                            pctLikes = 0;
+                        }
+                        else {
+                            pctLikes = undefined;
+                        }
+
+                        var viewCount = datastats.statistics.viewCount;
+                        var likes = datastats.statistics.likeCount;
+                        var dislikes = datastats.statistics.dislikeCount;
+
+                        //extract duration from ISO 8601 (PT#H#M#S)
+                        var duration = {};
+                        if (datastats.contentDetails) {
+                            duration = TimeService.isoToDuration(datastats.contentDetails.duration);
+                        }
+
+                        //add object to search results
+                        $scope.searchResults.push({
+                            "title": title,
+                            "channelTitle": channelTitle,
+                            "channelId": channelId,
+                            "created": created,
+                            "videoId": id,
+                            "pctLikes": pctLikes || 0,
+                            "viewCount": Number(viewCount),
+                            "likes": Number(likes) || 0,
+                            "dislikes": Number(dislikes) || 0,
+                            "thumbnail": datastats.snippet.thumbnails.medium,
+                            "duration": duration.formatted || null,
+                            "durationMinutes": duration.approxMinutes || null
+                        });
+                    }
+                }
             };
 
             $scope.sort = function(){

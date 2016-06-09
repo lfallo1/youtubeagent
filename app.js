@@ -31,7 +31,7 @@ app.get('/partials/:name', function(req, res){
 });
 
 //API
-app.use('/api/country', countriesAPI);
+app.use('/api/countries', countriesAPI.getAll);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', function(req, res){
