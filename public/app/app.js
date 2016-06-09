@@ -25,14 +25,14 @@ angular.module('youtubeSearchApp', ['ui.router','ngRoute', 'ngAnimate', 'toaster
     }]).run(['$rootScope', '$log', 'AuthService', function($rootScope, $log, AuthService){
 
         //live
-        //$rootScope.clientId = "613015363976-vt1eeel6upnq26k2haupepbdtpd2bjgj.apps.googleusercontent.com";
-        //$rootScope.authCallbackUrl = "http://www.youtubeagent.io/oauthcallback";
-        //$rootScope.apiKey = "AIzaSyAdvomXbhYg3GeBGymbPVBg-aRJeIOfFyQ";
+        $rootScope.clientId = "613015363976-vt1eeel6upnq26k2haupepbdtpd2bjgj.apps.googleusercontent.com";
+        $rootScope.authCallbackUrl = "http://www.youtubeagent.io/oauthcallback";
+        $rootScope.apiKey = "AIzaSyAdvomXbhYg3GeBGymbPVBg-aRJeIOfFyQ";
 
         //local
-        $rootScope.clientId = "613015363976-0aodg2ib3dmv8m2g7gmknnglg29cmir9.apps.googleusercontent.com";
-        $rootScope.authCallbackUrl = "http://localhost:3000/oauthcallback";
-        $rootScope.apiKey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
+        //$rootScope.clientId = "613015363976-0aodg2ib3dmv8m2g7gmknnglg29cmir9.apps.googleusercontent.com";
+        //$rootScope.authCallbackUrl = "http://localhost:3000/oauthcallback";
+        //$rootScope.apiKey = "AIzaSyB3v4vF0MIHB00iTr4lAxW2ONwZNmTR0HM";
 
         //set AuthService on rootScope for convenience (still placing AuthService in its service for modularity)
         $rootScope.AuthService = AuthService;
