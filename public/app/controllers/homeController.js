@@ -38,6 +38,9 @@
              * setup view
              */
             var init = function(){
+
+                $scope.sortField = {'value' : 'viewCount'};
+
                 CountriesService.getCountries().then(function(countries){
                     $scope.countries = countries;
                     $scope.selectedCountry = $scope.countries.filter(function(d){
@@ -61,7 +64,7 @@
                     new SortOption('dislikes', 1, 'thumbs-down', 'Dislikes'),
                     new SortOption('pctLikes', -1, 'star', 'Rating')
                 ];
-                $scope.sortField = $scope.sortOptions[0].value;
+                $scope.sortField.value = $scope.sortOptions[0].value;
             };
 
             $scope.setPlaying = function(video, val){
@@ -73,7 +76,7 @@
             };
 
             $scope.sortOptionChanged = function(option){
-                $scope.sortField = option.value;
+                $scope.sortField.value = option.value;
                 $scope.sort();
             };
 
@@ -595,7 +598,7 @@
             };
 
             $scope.sort = function(){
-                var sortObject = $scope.sortOptions.filter(function(d){if(d.value === $scope.sortField){return d;}})[0];
+                var sortObject = $scope.sortOptions.filter(function(d){if(d.value === $scope.sortField.value){return d;}})[0];
                 $scope.searchResults = $scope.searchResults.sort(function(a,b){
                     if(a[sortObject.value] > b[sortObject.value]){
                         return sortObject.direction;

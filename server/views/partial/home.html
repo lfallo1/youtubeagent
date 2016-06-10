@@ -62,40 +62,51 @@
             <div class="col-md-12 sort-filter-header">
                 <div class="sort-filter-header-content"><span class="glyphicon glyphicon-sort"></span>Sort</div>
             </div>
-            <div class="col-md-12 sort-content">
-                <label ng-repeat="option in sortOptions" ng-click="sortOptionChanged(option)">
-                    <input type="radio" ng-checked="option.value === sortField" value="{{option.value}}" ng-model="sortField" name="options" >
+
+            <div id="sort-content" class="btn-group col-md-12">
+                <div id="sort-content-wrapper">
+                    <button ng-repeat="option in sortOptions"
+                            class="sort-button btn btn-default" type="button" ng-model="sortField.value"
+                            uib-btn-radio="option.value" ng-click="sortOptionChanged(option)">
                         <span class="glyphicon glyphicon-{{option.glyph}}"></span>{{option.displayName}}
-                </label>
+                    </button>
+                </div>
             </div>
         </div>
         <div id="filter-options-container" class="row">
             <div class="col-md-12 sort-filter-header">
                 <div class="sort-filter-header-content"><span class="glyphicon glyphicon-filter"></span>Filter</div>
             </div>
-            <div class="col-md-12 filter-content">
-                <div id="maxDislikesContainer">
-                    <div id="maxDislikesHeader"><span class="glyphicon glyphicon-thumbs-down"></span>Dislikes</div>
-                    <input ng-model="minDislikes" type="number" class="form-control" ng-blur="filter()" placeholder="Maximum dislikes" />
-                </div>
-                <div id="minViewsContainer">
-                    <div id="minViewsHeader"><span class="glyphicon glyphicon-user"></span>Min Views</div>
-                    <input ng-model="minViews" type="number" class="form-control" ng-blur="filter()" placeholder="Minimum views" />
-                </div>
-                <div id="minRatingContainer">
-                    <div id="minRatingHeader"><span class="glyphicon glyphicon-star"></span>Min Rating</div>
-                    <input ng-model="minRating" type="number" class="form-control" ng-blur="filter()" placeholder="Minimum rating (0 to 100)" />
-                </div>
-                <div id="dateFilter">
-                    <div id="dateFilterHeader"><span class="glyphicon glyphicon-calendar"></span>Min Date</div>
-                    <input type="date" ng-blur="filter()" class="form-control" ng-model="minDate" placeholder="Select earliest date" />
-                </div>
-
-                <div id="durationContainer">
-                    <div id="durationFilterHeader"><span class="glyphicon glyphicon-time"></span>Duration</div>
-                    <input ng-model="longerThanFilter" type="number" class="form-control" placeholder="> (mins)" ng-blur="filter()"/>
-                    <input ng-model="lessThanFilter" type="number" class="form-control" placeholder="< (mins)" ng-blur="filter()" />
-                </div>
+            <div class="col-md-12 filter-content-table">
+                <table>
+                    <tbody>
+                        <tr class="row-padding">
+                            <td class="filter-label"><span class="glyphicon glyphicon-thumbs-down"></span>Dislikes</td>
+                            <td class="filter-input"><input ng-model="minDislikes" type="number" class="form-control" ng-blur="filter()" placeholder="Maximum dislikes" /></td>
+                        </tr>
+                        <tr class="row-padding">
+                            <td class="filter-label"><span class="glyphicon glyphicon-user"></span>Min Views</td>
+                            <td class="filter-input"><input ng-model="minViews" type="number" class="form-control" ng-blur="filter()" placeholder="Minimum views" /></td>
+                        </tr>
+                        <tr class="row-padding">
+                            <td class="filter-label"><span class="glyphicon glyphicon-star"></span>Min Rating</td>
+                            <td class="filter-input"><input ng-model="minRating" type="number" class="form-control" ng-blur="filter()" placeholder="Minimum rating (0 to 100)" /></td>
+                        </tr>
+                        <tr class="row-padding">
+                            <td class="filter-label"><span class="glyphicon glyphicon-calendar"></span>Min Date</td>
+                            <td class="filter-input"><input type="date" ng-blur="filter()" class="form-control" ng-model="minDate" placeholder="Select earliest date" /></td>
+                        </tr>
+                        <tr class="row-padding">
+                            <td class="filter-label"><span class="glyphicon glyphicon-time"></span>Duration</td>
+                            <td class="filter-input">
+                                <div id="duration-range-wrapper">
+                                    <input ng-model="longerThanFilter" type="number" class="form-control" placeholder="> (mins)" ng-blur="filter()"/>
+                                    <input ng-model="lessThanFilter" type="number" class="form-control" placeholder="< (mins)" ng-blur="filter()" />
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
