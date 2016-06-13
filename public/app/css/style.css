@@ -378,3 +378,36 @@ body{
     font-weight: bolder;
     font-size: 18px;
 }
+
+#date-range-input-group-wrapper {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#date-range-input-group-wrapper input{
+    font-size: 16px;
+    padding: 8px;
+    height: 40px;
+
+}
+
+#date-range-input-group-wrapper .form-group{
+    margin: 0px 15px;
+}
+
+#date-range-input-group-wrapper{
+    background: #E3F2FD;
+    padding: 8px;
+    border-radius: 8px;
+    color: #0D47A1;
+    border: 1px solid #BBDEFB ;
+}
+
+#date-range-header{
+    margin-bottom: 8px;
+    font-weight: bolder;
+}
+
+#date-range-header .glyphicon{
+    margin-right: 5px;
+}

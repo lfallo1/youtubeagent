@@ -16,6 +16,21 @@
                 <div id="stopButton" ng-if="fetching" class="notta-button input-group-addon" ng-click="interrupt()"><span class="glyphicon glyphicon-stop"></span>Stop</div>
             </div>
         </form>
+
+        <div ng-show="searchMode === TEXT_SEARCH" id="date-range-input-group-wrapper">
+            <div id="date-range-header"><span class="glyphicon glyphicon-calendar"></span>Pre-Search Date Filter (Optional)</div>
+            <form id="date-range-input-form" class="form-inline">
+                <div class="form-group">
+                    <label for="pre-search-min-date">Min Date</label>
+                    <input type="date" class="form-control" id="pre-search-min-date" ng-model="preSearchMinDate">
+                </div>
+                <div class="form-group">
+                    <label for="pre-search-max-date">Max Date</label>
+                    <input type="date" class="form-control" id="pre-search-max-date" ng-model="preSearchMaxDate">
+                </div>
+            </form>
+        </div>
+
         <div ng-show="searchMode === POPULAR_SEARCH" id="search-popular-wrapper" class="row">
             <div id="countries-dropdown-wrapper" class="col-md-6">
                 <select id="countries-list" name="countries" class="form-control"
@@ -75,7 +90,7 @@
         </div>
         <div id="filter-options-container" class="row">
             <div class="col-md-12 sort-filter-header">
-                <div class="sort-filter-header-content"><span class="glyphicon glyphicon-filter"></span>Filter</div>
+                <div class="sort-filter-header-content"><span class="glyphicon glyphicon-filter"></span>Post-Search Filters</div>
             </div>
             <div class="col-md-12 filter-content-table">
                 <table>
@@ -92,10 +107,10 @@
                             <td class="filter-label"><span class="glyphicon glyphicon-star"></span>Min Rating</td>
                             <td class="filter-input"><input ng-model="minRating" type="number" class="form-control" ng-blur="filter()" placeholder="Minimum rating (0 to 100)" /></td>
                         </tr>
-                        <tr class="row-padding">
-                            <td class="filter-label"><span class="glyphicon glyphicon-calendar"></span>Min Date</td>
-                            <td class="filter-input"><input type="date" ng-blur="filter()" class="form-control" ng-model="minDate" placeholder="Select earliest date" /></td>
-                        </tr>
+                        <!--<tr class="row-padding">-->
+                            <!--<td class="filter-label"><span class="glyphicon glyphicon-calendar"></span>Min Date</td>-->
+                            <!--<td class="filter-input"><input type="date" ng-blur="filter()" class="form-control" ng-model="minDate" placeholder="Select earliest date" /></td>-->
+                        <!--</tr>-->
                         <tr class="row-padding">
                             <td class="filter-label"><span class="glyphicon glyphicon-time"></span>Duration</td>
                             <td class="filter-input">

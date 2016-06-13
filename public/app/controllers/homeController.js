@@ -152,45 +152,48 @@
                 }
 
                 //create date object query params if not the first pass
-                var date = new Date();
-                var dateLarge = '';
-                var dateSmall = '';
-                if(iteration !== 0){
-                    //define the date range
-                    var large = new Date(date.getFullYear()-iteration*2, date.getMonth(), date.getDate());
-                    var small = new Date(date.getFullYear()-iteration - 2, date.getMonth(), date.getDate());
-                    dateSmall = "&publishedAfter=" + small.toISOString();
-                    dateLarge = "&publishedBefore=" + large.toISOString();
-                }
+                //var date = new Date();
+                //var dateLarge = '';
+                //var dateSmall = '';
+                //if(iteration !== 0){
+                //    //define the date range
+                //    var large = new Date(date.getFullYear()-iteration*2, date.getMonth(), date.getDate());
+                //    var small = new Date(date.getFullYear()-iteration - 2, date.getMonth(), date.getDate());
+                //    dateSmall = "&publishedAfter=" + small.toISOString();
+                //    dateLarge = "&publishedBefore=" + large.toISOString();
+                //}
 
                 //increment iteration by two
-                iteration += 2;
+                //iteration += 2;
+                var dateLarge = $scope.preSearchMaxDate ? "&publishedBefore=" + $scope.preSearchMaxDate.toISOString() : '';
+                var dateSmall = $scope.preSearchMinDate ? "&publishedAfter=" + $scope.preSearchMinDate.toISOString() : '';
 
                 //fetch results, passing the date range (the date ranges can be empty)
                 fetchResults(dateSmall, dateLarge).then(function(){
 
                     //check if yearlySearch and iteration is not 10 or greater
-                   if($scope.yearlySearch && iteration < 10){
-
-                       //if we are searching again, reset the sort order objects & their tokens, then call fetchResultsWrapper
-                       resetSortOrders();
-                       fetchResultsWrapper(iteration);
-                       return;
-                   }
+                   //if($scope.yearlySearch && iteration < 10){
+                   //
+                   //    //if we are searching again, reset the sort order objects & their tokens, then call fetchResultsWrapper
+                   //    resetSortOrders();
+                   //    fetchResultsWrapper(iteration);
+                   //    return;
+                   //}
                     stopSearch('Finished search', 'info');
                 }, function(err){
 
                     //if explicitly returning an error, then return
-                    if(err){
-                        return;
-                    }
-
-                    //otherwise, we want to try and continue
-                    if($scope.yearlySearch && iteration < 10){
-                        resetSortOrders();
-                        fetchResultsWrapper(iteration);
-                        return;
-                    }
+                    //if(err){
+                    //    return;
+                    //}
+                    //
+                    ////otherwise, we want to try and continue
+                    //if($scope.yearlySearch && iteration < 10){
+                    //    resetSortOrders();
+                    //    fetchResultsWrapper(iteration);
+                    //    return;
+                    //}
+                    stopSearch('Finished search', 'info');
                 });
             };
 
@@ -215,7 +218,7 @@
                 //for each sort order type, execute the GET request.  doing this so that more results are returned.
                 for (var i = 0; i < sortOrders.length; i++) {
                     var token = sortOrders[i].token ? 'pageToken=' + sortOrders[i].token + '&' : '';
-                    promises.push($http.get("https://www.googleapis.com/youtube/v3/search?" + token + "key=" + apikey + "&part=snippet&q="                      + $scope.searchParam + "&type=video&maxResults=50" +
+                    promises.push($http.get("https://www.googleapis.com/youtube/v3/search?" + token + "key=" + apikey + "&part=snippet&q=" + $scope.searchParam + "&type=video&maxResults=50" +
                         dateSmall + dateLarge +
                         "&order=" + sortOrders[i].order));
                 }

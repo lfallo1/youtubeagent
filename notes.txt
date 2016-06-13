@@ -1,0 +1,3 @@
+- Filter text-search results by video-category before search
+- Look more into giving option to filter searches within a region
+- Look into searching for only videos in a channel, or just get all videos in channel
