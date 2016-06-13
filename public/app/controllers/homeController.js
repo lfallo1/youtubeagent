@@ -215,11 +215,13 @@
 
                 var promises = [];
 
+                var regionCode = $scope.selectedCountry ? '&regionCode=' + $scope.selectedCountry['alpha-2'] : '';
+
                 //for each sort order type, execute the GET request.  doing this so that more results are returned.
                 for (var i = 0; i < sortOrders.length; i++) {
                     var token = sortOrders[i].token ? 'pageToken=' + sortOrders[i].token + '&' : '';
                     promises.push($http.get("https://www.googleapis.com/youtube/v3/search?" + token + "key=" + apikey + "&part=snippet&q=" + $scope.searchParam + "&type=video&maxResults=50" +
-                        dateSmall + dateLarge +
+                        dateSmall + dateLarge + regionCode +
                         "&order=" + sortOrders[i].order));
                 }
 

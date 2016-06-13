@@ -18,7 +18,7 @@
         </form>
 
         <div ng-show="searchMode === TEXT_SEARCH" id="date-range-input-group-wrapper">
-            <div id="date-range-header"><span class="glyphicon glyphicon-calendar"></span>Pre-Search Date Filter (Optional)</div>
+            <div id="date-range-header">Pre-Search Filters (Optional)</div>
             <form id="date-range-input-form" class="form-inline">
                 <div class="form-group">
                     <label for="pre-search-min-date">Min Date</label>
@@ -27,6 +27,16 @@
                 <div class="form-group">
                     <label for="pre-search-max-date">Max Date</label>
                     <input type="date" class="form-control" id="pre-search-max-date" ng-model="preSearchMaxDate">
+                </div>
+                <div id="countries-dropdown-textmode-wrapper" class="form-group">
+                    <label for="countries-list-textmode">Select Region</label>
+                    <select id="countries-list-textmode" name="countries" class="form-control"
+                            ng-model="selectedCountry"
+                            ng-options="country.name for country in countries"
+                            ng-change="updateCategories()"
+                            placeholder="Select a country">
+                        <option value="">{{searchMode === TEXT_SEARCH ? 'Any country' : 'Select a country'}}</option>
+                    </select>
                 </div>
             </form>
         </div>

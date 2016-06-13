@@ -408,6 +408,6 @@ body{
     font-weight: bolder;
 }
 
-#date-range-header .glyphicon{
-    margin-right: 5px;
+#countries-dropdown-textmode-wrapper{
+    margin-top: 10px !important;
 }
