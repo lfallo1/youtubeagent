@@ -21,6 +21,15 @@
             var relatedPending = false;
             var iteration = 0;
 
+            var regionCode = '';
+            var related= '';
+            var videoDuration= '';
+            var videoCategoryId= '';
+            var safeSearch= '';
+            
+            $scope.videoDurationsOptions = ['any','long','medium','short'];
+            $scope.safeSearchOptions = ['moderate', 'none', 'strict'];
+
             /**
              * SortOption object
              * @param value
@@ -146,6 +155,12 @@
                     $scope.wasInterrupted = undefined;
                     $scope.fetching = true;
 
+                    related = $scope.checkRelated && $scope.related ? '&relatedToVideoId=' + $scope.related : '';
+                    regionCode = $scope.selectedCountry ? '&regionCode=' + $scope.selectedCountry['alpha-2'] : '';
+                    videoDuration = $scope.videoDuration ? '&videoDuration=' + $scope.videoDuration : '';
+                    videoCategoryId = $scope.videoCategoryId ? '&videoCategoryId=' + $scope.videoCategoryId : '';
+                    safeSearch = $scope.safeSearch ? '&safeSearch=' + $scope.safeSearch : '';
+
                     //call the wrapper
                     fetchResultsWrapper(0);
                 }
@@ -219,16 +234,12 @@
                 }
 
                 var promises = [];
-
-                var regionCode = $scope.selectedCountry ? '&regionCode=' + $scope.selectedCountry['alpha-2'] : '';
-
-                var related = $scope.checkRelated && $scope.related ? '&relatedToVideoId=' + $scope.related : '';
-
+                
                 //for each sort order type, execute the GET request.  doing this so that more results are returned.
                 for (var i = 0; i < sortOrders.length; i++) {
                     var token = sortOrders[i].token ? 'pageToken=' + sortOrders[i].token + '&' : '';
                     promises.push($http.get("https://www.googleapis.com/youtube/v3/search?" + token + "key=" + apikey + "&part=snippet&q=" + $scope.searchParam + "&type=video&maxResults=50" +
-                        dateSmall + dateLarge + regionCode +
+                        dateSmall + dateLarge + regionCode + videoDuration + videoCategoryId + safeSearch +
                         "&order=" + sortOrders[i].order + related));
                 }
 
