@@ -18,6 +18,8 @@
             $scope.TEXT_SEARCH = 1;
             $scope.POPULAR_SEARCH = 2;
             var ALL_CATEGORIES = {'id' : '-1', 'snippet' : {'title' : 'Search All Categories'}};
+            var relatedPending = false;
+            var iteration = 0;
 
             /**
              * SortOption object
@@ -38,6 +40,8 @@
              * setup view
              */
             var init = function(){
+
+                $scope.extendedSearch = false;
 
                 $scope.sortField = {'value' : 'viewCount'};
 
@@ -84,6 +88,10 @@
              * Interrupt a search
              */
             $scope.interrupt = function(){
+                relatedPending = false;
+                $scope.related = undefined;
+                $scope.checkRelated = false;
+                $scope.checkRelated = false;
                 $scope.wasInterrupted = true;
                 $scope.fetching = false;
                 toaster.pop('info', '', 'Search stopped');
@@ -126,6 +134,12 @@
                 $scope.searchParam = $scope.searchParam.trim();
                 if($scope.searchParam){
 
+                    iteration = 0;
+                    $scope.related = undefined;
+                    $scope.nextRelated = [];
+                    $scope.checkRelated = false;
+                    relatedPending = true;
+
                     resetSortOrders();
                     $scope.searchResults = [];
 
@@ -151,49 +165,40 @@
                     return;
                 }
 
-                //create date object query params if not the first pass
-                //var date = new Date();
-                //var dateLarge = '';
-                //var dateSmall = '';
-                //if(iteration !== 0){
-                //    //define the date range
-                //    var large = new Date(date.getFullYear()-iteration*2, date.getMonth(), date.getDate());
-                //    var small = new Date(date.getFullYear()-iteration - 2, date.getMonth(), date.getDate());
-                //    dateSmall = "&publishedAfter=" + small.toISOString();
-                //    dateLarge = "&publishedBefore=" + large.toISOString();
-                //}
-
-                //increment iteration by two
-                //iteration += 2;
                 var dateLarge = $scope.preSearchMaxDate ? "&publishedBefore=" + $scope.preSearchMaxDate.toISOString() : '';
                 var dateSmall = $scope.preSearchMinDate ? "&publishedAfter=" + $scope.preSearchMinDate.toISOString() : '';
 
                 //fetch results, passing the date range (the date ranges can be empty)
                 fetchResults(dateSmall, dateLarge).then(function(){
 
-                    //check if yearlySearch and iteration is not 10 or greater
-                   //if($scope.yearlySearch && iteration < 10){
-                   //
-                   //    //if we are searching again, reset the sort order objects & their tokens, then call fetchResultsWrapper
-                   //    resetSortOrders();
-                   //    fetchResultsWrapper(iteration);
-                   //    return;
-                   //}
-                    stopSearch('Finished search', 'info');
+                    //if the related videos is empty, or search related videos is turned off then finish the search
+                    if($scope.nextRelated.length == 0 || !$scope.extendedSearch){
+                        relatedPending = false;
+                        stopSearch('Finished search', 'info');
+                        return;
+                    }
+                    iteration++;
+                    resetSortOrders();
+                    relatedPending = false;
+                    $scope.related = $scope.nextRelated[0];
+                    $scope.nextRelated.splice(0,1);
+                    $scope.checkRelated = true;
+                    fetchResultsWrapper(0,false);
                 }, function(err){
 
-                    //if explicitly returning an error, then return
-                    //if(err){
-                    //    return;
-                    //}
-                    //
-                    ////otherwise, we want to try and continue
-                    //if($scope.yearlySearch && iteration < 10){
-                    //    resetSortOrders();
-                    //    fetchResultsWrapper(iteration);
-                    //    return;
-                    //}
-                    stopSearch('Finished search', 'info');
+                    //if the related videos is empty, or search related videos is turned off then finish the search
+                    if($scope.nextRelated.length == 0 || !$scope.extendedSearch){
+                        stopSearch('Finished search', 'info');
+                        relatedPending = false;
+                        return;
+                    }
+                    iteration++;
+                    resetSortOrders();
+                    relatedPending = false;
+                    $scope.related = $scope.nextRelated[0];
+                    $scope.nextRelated.splice(0,1);
+                    $scope.checkRelated = true;
+                    fetchResultsWrapper(0,false);
                 });
             };
 
@@ -217,31 +222,22 @@
 
                 var regionCode = $scope.selectedCountry ? '&regionCode=' + $scope.selectedCountry['alpha-2'] : '';
 
+                var related = $scope.checkRelated && $scope.related ? '&relatedToVideoId=' + $scope.related : '';
+
                 //for each sort order type, execute the GET request.  doing this so that more results are returned.
                 for (var i = 0; i < sortOrders.length; i++) {
                     var token = sortOrders[i].token ? 'pageToken=' + sortOrders[i].token + '&' : '';
                     promises.push($http.get("https://www.googleapis.com/youtube/v3/search?" + token + "key=" + apikey + "&part=snippet&q=" + $scope.searchParam + "&type=video&maxResults=50" +
                         dateSmall + dateLarge + regionCode +
-                        "&order=" + sortOrders[i].order));
+                        "&order=" + sortOrders[i].order + related));
                 }
 
                 //wait for all requests to complete
                 $q.all(promises).then(function (res) {
 
-                    //no results, then finish
+                    //no results, then check how many warningss (after no results for two consecutive passes, then bail).
+                    //otherwise, try again
                     if (!res || res.length === 0) {
-                        deferred.resolve();
-                        return;
-                    }
-
-                    //no items in any results, then finish
-                    var sum = 0;
-                    res.forEach(function (d) {
-                        if (d.data && d.data.items) {
-                            sum += d.data.items.length;
-                        }
-                    });
-                    if (sum === 0) {
                         deferred.resolve();
                         return;
                     }
@@ -298,7 +294,7 @@
                     }
 
                     if(promises.length === 0){
-                        fetchResults(dateSmall, dateLarge, deferred);
+                        deferred.resolve();
                         return;
                     }
 
@@ -308,6 +304,41 @@
                         var data = [];
                         for (var i = 0; i < res.length; i++) {
                             data = data.concat(res[i].data.items);
+                        }
+
+                        //populated related video id's (for now, only populating during first pass)
+                        if(relatedPending && $scope.nextRelated.length === 0){
+
+                            //split search term(s) into array
+                            var parts = $scope.searchParam.toLowerCase().split(' ' );
+
+                            //loop over each returned video
+                            for(var count = data.length - 1; count >= 0; count--){
+
+                                //if the video has tags
+                                if(data[count].snippet.tags){
+
+                                    //get the tags
+                                    var terms = data[count].snippet.tags.toString().toLowerCase();
+
+                                    var isRelevant = true;
+
+                                    //check if tags match what we searched for
+                                    for(var i = 0; i < parts.length; i++){
+
+                                        //if for any term in our search, it does NOT exist in the videos's tags, then we consider it not a relevant match
+                                        if(terms.toLowerCase().indexOf(parts[i]) < 0){
+                                            isRelevant = false;
+                                            break;
+                                        }
+                                    }
+
+                                    //if relevant (terms are similar), then add to related list
+                                    if(isRelevant){
+                                        $scope.nextRelated.push(data[count].id);
+                                    }
+                                }
+                            }
                         }
 
                         addVideosToList(data);

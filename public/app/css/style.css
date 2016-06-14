@@ -411,3 +411,15 @@ body{
 #countries-dropdown-textmode-wrapper{
     margin-top: 10px !important;
 }
+
+#extended-search-wrapper{
+    margin-top: 25px;
+}
+
+#extended-search-wrapper > div{
+    display: inline-block;
+}
+
+#extended-search-wrapper .btn{
+    margin-right: 7px;
+}
